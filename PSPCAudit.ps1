@@ -1,8 +1,47 @@
-function Get-BasicComputerInfo
+# TODO: Create Function with advanced parameters
+function Get-HyperVInformation($computerInfo)
 {
-    $computerInfo=Get-ComputerInfo
-    
-    
+    #region HyperV
+    $hyperV = $computerInfo | Select-Object HyperV*
+
+    if ($hyperV.HyperVisorPresent) {
+        $hyperV.HyperVisorPresent = "HyperVisor is detected"
+    }
+    else {
+        $hyperV.HyperVisorPresent = "HyperVisor is  not detected"
+        
+    }
+    if ($hyperV.HyperVRequirementDataExecutionPreventionAvailable) {
+        $hyperV.HyperVRequirementDataExecutionPreventionAvailable = "Data Execution Prevention is available"
+    }
+    else {
+        $hyperV.HyperVRequirementDataExecutionPreventionAvailable = "Data Execution Prevention is not available or unknown"
+    }
+    if ($hyperV.HyperVRequirementSecondLevelAddressTranslation) {
+        $hyperV.HyperVRequirementSecondLevelAddressTranslation = "Second Level Address Translation is available"
+    }
+    else {
+        $hyperV.HyperVRequirementSecondLevelAddressTranslation = "Second Level Address Translation is not available or unknown"
+    }
+    if ($hyperV.HyperVRequirementVirtualizationFirmwareEnabled) {
+        $hyperV.HyperVRequirementVirtualizationFirmwareEnabled = "Virtualization is enabled by firmware"
+    }
+    else {
+        $hyperV.HyperVRequirementVirtualizationFirmwareEnabled = "Virtualization is not enabled by firmware or is unknown"
+    }
+    if ($hyperV.HyperVRequirementVMMonitorModeExtensions) {
+        $hyperV.HyperVRequirementVMMonitorModeExtensions = "The processor supports Intel or AMD Virtual Machine Monitor extensions"
+    }
+    else {
+        $hyperV.HyperVRequirementVMMonitorModeExtensions = "The processor not supports Intel or AMD Virtual Machine Monitor extensions or the state is unknown"
+    }
+    #endregion HyperV
+    $hyperV
+}
+
+# TODO: Create Function with advanced parameters
+function Get-BasicComputerInformation($computerInfo)
+{
     #region Basic
     $basic=$computerInfo | Select-Object Windows*,TimeZone,LogonServer,PowerPlatformRole
     switch($basic.PowerPlatformRole)
@@ -19,11 +58,20 @@ function Get-BasicComputerInfo
         "Workstation" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified a workstation role"}
     }
     #endregion Basic
+    $basic
+}
+
+function Get-BasicComputerInfo
+{
+    $computerInfo=Get-ComputerInfo
+    
+    #region Basic
+    #region Basic
     
     #region BIOS
-    # TODO: $bios.BiosCharacteristics
-    # TODO: $bios.BiosBIOSVersion
-    # TODO: $bios.BiosListOfLanguages
+    # TODO: $bios.BiosCharacteristics - list of values
+    # TODO: $bios.BiosBIOSVersion - list of values
+    # TODO: $bios.BiosListOfLanguages - list of values
     $bios=$computerInfo | Select-Object Bios*
     switch($bios.BiosFirmwareType)
     {
@@ -59,12 +107,12 @@ function Get-BasicComputerInfo
 
     #region ComputerSystem
 
-    # TODO: $computerSystem.CsBootStatus
-    # TODO: $computerSystem.CsNetworkAdapters
-    # TODO: $computerSystem.CsOEMStringArray
-    # TODO: $computerSystem.CsPowerManagementCapabilities
-    # TODO: $computerSystem.CsRoles
-    # TODO: $computerSystem.CsSupportcontactDescription
+    # TODO: $computerSystem.CsBootStatus - list of values
+    # TODO: $computerSystem.CsNetworkAdapters - list of values
+    # TODO: $computerSystem.CsOEMStringArray - list of values
+    # TODO: $computerSystem.CsPowerManagementCapabilities - list of values
+    # TODO: $computerSystem.CsRoles - list of values
+    # TODO: $computerSystem.CsSupportcontactDescription - list of values
 
     $computerSystem=$computerInfo | Select-Object Cs*
     
@@ -291,12 +339,12 @@ function Get-BasicComputerInfo
 
     #region OperatingSystem
 
-    # TODO: $os.OsHotFixes
+    # TODO: $os.OsHotFixes - list of values
     #! TODO: $os.OsCountryCode - 238 elements to translate code
-    # TODO: $os.OsPagingFiles 
-    # TODO: $os.OsMuiLanguages
-    # TODO: $os.OsProductSuites 
-    # TODO: $os.OsSuites 
+    # TODO: $os.OsPagingFiles - list of values
+    # TODO: $os.OsMuiLanguages - list of values
+    # TODO: $os.OsProductSuites - list of values 
+    # TODO: $os.OsSuites - list of values 
 
     $os=$computerInfo | Select-Object Os*
 
@@ -436,7 +484,7 @@ function Get-BasicComputerInfo
 
     $os.OsFreeSpaceInPagingFiles = "$($os.OsFreeSpaceInPagingFiles) KB - Number, in kilobytes, that can be mapped into the operating system paging files without causing any other pages to be swapped out"
     
-    #$os.OsPagingFiles = "$($os.OsPagingFiles) - array of field paths to the operating system paging files"
+    # TODO: $os.OsPagingFiles = "$($os.OsPagingFiles) - array of field paths to the operating system paging files" - list of values
     
     $os.OsHardwareAbstractionLayer = " $($os.OsHardwareAbstractionLayer) - version of the operating system's Hardware Abstraction Layer (HAL)"
     
@@ -444,13 +492,13 @@ function Get-BasicComputerInfo
     
     $os.OsMaxProcessMemorySize = "$($os.OsMaxProcessMemorySize) maximum number of kilobytes of memory that can be allocated to a process"
     
-    #$os.OsMuiLanguages = "$($os.OsMuiLanguages) array of languages installed on computer"
+    # TODO: $os.OsMuiLanguages = "$($os.OsMuiLanguages) array of languages installed on computer" - list of values
     
     $os.OsNumberOfProcesses = "$($os.OsNumberOfProcesses) - Number of process contexts currently loaded or running on the operating system"
     
     $os.OsNumberOfUsers = "$($os.OsNumberOfUsers) - Number of user sessions for which the operating system is storing state information currently"
     
-    #$os.OsProductSuites #TODO: Returning Array. Table in Table?
+    # TODO: $os.OsProductSuites #TODO: Returning Array. Table in Table? - list of values
     if ($os.OsPAEEnabled)
     {
         $os.OsPAEEnabled ="Physical Address extension are enabled by operating system on Intel processors"
@@ -480,51 +528,8 @@ function Get-BasicComputerInfo
     #endregion OperatingSystem
     
     #region HyperV
-    $hyperV=$computerInfo | Select-Object HyperV*
-
-    if($hyperV.HyperVisorPresent)
-    {
-        $hyperV.HyperVisorPresent = "HyperVisor is detected"
-    }
-    else 
-    {
-        $hyperV.HyperVisorPresent = "HyperVisor is  not detected"
-        
-    }
-    if ($hyperV.HyperVRequirementDataExecutionPreventionAvailable)
-    {
-        $hyperV.HyperVRequirementDataExecutionPreventionAvailable = "Data Execution Prevention is available"
-    }
-    else 
-    {
-        $hyperV.HyperVRequirementDataExecutionPreventionAvailable = "Data Execution Prevention is not available or unknown"
-    }
-    if ($hyperV.HyperVRequirementSecondLevelAddressTranslation) 
-    {
-        $hyperV.HyperVRequirementSecondLevelAddressTranslation = "Second Level Address Translation is available"
-    }
-    else 
-    {
-        $hyperV.HyperVRequirementSecondLevelAddressTranslation = "Second Level Address Translation is not available or unknown"
-    }
-    if ($hyperV.HyperVRequirementVirtualizationFirmwareEnabled) 
-    {
-        $hyperV.HyperVRequirementVirtualizationFirmwareEnabled = "Virtualization is enabled by firmware"
-    }
-    else 
-    {
-        $hyperV.HyperVRequirementVirtualizationFirmwareEnabled = "Virtualization is not enabled by firmware or is unknown"
-    }
-    if ($hyperV.HyperVRequirementVMMonitorModeExtensions) 
-    {
-        $hyperV.HyperVRequirementVMMonitorModeExtensions = "The processor supports Intel or AMD Virtual Machine Monitor extensions"
-    }
-    else 
-    {
-        $hyperV.HyperVRequirementVMMonitorModeExtensions = "The processor not supports Intel or AMD Virtual Machine Monitor extensions or the state is unknown"
-    }
     #endregion HyperV
-
+    
     #region DeviceGuard
 
     #TODO: $deviceGuard.DeviceGuardRequiredSecurityProperties
@@ -548,11 +553,11 @@ function Get-BasicComputerInfo
     #endregion DeviceGuard
 
     $basicInformation = [PSCustomObject]@{
-        BasicInformation = $basic
+        BasicInformation = Get-BasicComputerInformation($computerInfo)
         Bios             = $bios
         ComputerSystem   = $computerSystem
         OperatingSystem  = $os
-        HyperV           = $hyperV
+        HyperV           = Get-HyperVInformation($computerInfo)
         DeviceGuard      = $deviceGuard
     }
     $basicInformation
@@ -621,7 +626,7 @@ Get-CimInstance Win32_BaseBoard | Select-Object * -ExcludeProperty CreationClass
 }
 
 #region HTMLStructures
-# TODO: implement classes with strategy pattern
+# ? implement classes with strategy pattern
 function New-HTMLTable()
 {
     [CmdletBinding()]
@@ -639,7 +644,7 @@ function New-HTMLTable()
     return $output
 }
 
-
+# TEST
 function New-HTMLList() 
 {
     [CmdletBinding()]
@@ -751,4 +756,4 @@ $(New-JSScript)
 
 return $report
 }
-New-HTMLBody | Out-File "test.html"
+New-HTMLBody | Out-File "H:\test.html"
