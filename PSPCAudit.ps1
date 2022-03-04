@@ -357,181 +357,183 @@ function Get-DeviceGuardInformation($computerInfo)
 # @OUT: edited information from @IN 
 # TODO: Create Function with advanced parameters
 # TODO: Not working in HTML Why?
+
 function Get-OperatingSystemInformation($computerInfo)
 {
     #region OperatingSystem
-
-    # TODO: $os.OsHotFixes - list of values
-    #! TODO: $os.OsCountryCode - 238 elements to translate code
-    # TODO: $os.OsPagingFiles - list of values
-    # TODO: $os.OsMuiLanguages - list of values
-    # TODO: $os.OsProductSuites - list of values 
-    # TODO: $os.OsSuites - list of values 
-
-    $os = $computerInfo | Select-Object Os*
-
-    switch ($os.OsOperatingSystemSKU) {
-        "0" { $os.OsOperatingSystemSKU = "The SKU is undefined" }
-        "1" { $os.OsOperatingSystemSKU = "SKU is Ultimate Edition" }
-        "2" { $os.OsOperatingSystemSKU = "SKU is Home Basic Edition" }
-        "3" { $os.OsOperatingSystemSKU = "SKU is Home Premium Edition" }
-        "4" { $os.OsOperatingSystemSKU = "SKU is Enterprise Edition" }
-        "5" { $os.OsOperatingSystemSKU = "SKU is Home Basic N Edition" }
-        "6" { $os.OsOperatingSystemSKU = "SKU is Business Edition" }
-        "7" { $os.OsOperatingSystemSKU = "SKU is Standard Server Edition" }
-        "8" { $os.OsOperatingSystemSKU = "SKU is Datacenter Server Edition" }
-        "9" { $os.OsOperatingSystemSKU = "SKU is Small Business Server Edition" }
-        "10" { $os.OsOperatingSystemSKU = "SKU is Enterprise Server Edition" }
-        "11" { $os.OsOperatingSystemSKU = "SKU is Starter Edition" }
-        "12" { $os.OsOperatingSystemSKU = "SKU is Datacenter Server Core Edition" }
-        "13" { $os.OsOperatingSystemSKU = "SKU is Standard Server Core Edition" }
-        "14" { $os.OsOperatingSystemSKU = "SKU is Enterprise Server Core Edition" }
-        "15" { $os.OsOperatingSystemSKU = "SKU is Enterprise Server IA64 Edition" }
-        "16" { $os.OsOperatingSystemSKU = "SKU is Business N Edition" }
-        "17" { $os.OsOperatingSystemSKU = "SKU is Web Server Edition" }
-        "18" { $os.OsOperatingSystemSKU = "SKU is Cluster Server Edition" }
-        "19" { $os.OsOperatingSystemSKU = "SKU is Home Server Edition" }
-        "20" { $os.OsOperatingSystemSKU = "SKU is Storage Express Server Edition" }
-        "21" { $os.OsOperatingSystemSKU = "SKU is Storage Standard Server Edition" }
-        "22" { $os.OsOperatingSystemSKU = "SKU is Storage Workgroup Server Edition" }
-        "23" { $os.OsOperatingSystemSKU = "SKU is Storage Enterprise Server Edition" }
-        "24" { $os.OsOperatingSystemSKU = "SKU is Server For Small Business Edition" }
-        "25" { $os.OsOperatingSystemSKU = "SKU is Small Business Server Premium Edition" }
-        "27" { $os.OsOperatingSystemSKU = "SKU is Windows Enterprise" }
-        "28" { $os.OsOperatingSystemSKU = "SKU is Windows Ultimate" }
-        "29" { $os.OsOperatingSystemSKU = "SKU is Web Server (core installation)" }
-        "33" { $os.OsOperatingSystemSKU = "SKU is Server Foundation" }
-        "34" { $os.OsOperatingSystemSKU = "SKU is Windows Home Server" }
-        "36" { $os.OsOperatingSystemSKU = "SKU is Windows Server Standard without Hyper-V" }
-        "37" { $os.OsOperatingSystemSKU = "SKU is Windows Server Datacenter without Hyper-V (full installation)" }
-        "38" { $os.OsOperatingSystemSKU = "SKU is Windows Server Enterprise without Hyper-V (full installation)" }
-        "39" { $os.OsOperatingSystemSKU = "SKU is Windows Server Datacenter without Hyper-V (core installation)" }
-        "40" { $os.OsOperatingSystemSKU = "SKU is Windows Server Standard without Hyper-V (core installation)" }
-        "41" { $os.OsOperatingSystemSKU = "SKU is Windows Server Enterprise without Hyper-V (core installation)" }
-        "42" { $os.OsOperatingSystemSKU = "SKU is Microsoft Hyper-V Server" }
-        "43" { $os.OsOperatingSystemSKU = "SKU is Storage Server Express (core installation)" }
-        "44" { $os.OsOperatingSystemSKU = "SKU is Storage Server Standard (core installation)" }
-        "45" { $os.OsOperatingSystemSKU = "SKU is Storage Server Workgroup (core installation)" }
-        "46" { $os.OsOperatingSystemSKU = "SKU is Storage Server Enterprise (core installation)" }
-        "48" { $os.OsOperatingSystemSKU = "SKU is Windows Professional" }
-        "50" { $os.OsOperatingSystemSKU = "SKU is Windows Server Essentials (Desktop Experience installation)" }
-        "63" { $os.OsOperatingSystemSKU = "SKU is Small Business Server Premium (core installation)" }
-        "64" { $os.OsOperatingSystemSKU = "SKU is Windows Server Hyper Core V" }
-        "87" { $os.OsOperatingSystemSKU = "SKU is Windows Thin PC" }
-        "89" { $os.OsOperatingSystemSKU = "SKU is Windows Embedded Industry" }
-        "97" { $os.OsOperatingSystemSKU = "SKU is Windows RT" }
-        "101" { $os.OsOperatingSystemSKU = "SKU is Windows Home" }
-        "103" { $os.OsOperatingSystemSKU = "SKU is Windows Professional with Media Center" }
-        "104" { $os.OsOperatingSystemSKU = "SKU is Windows Mobile" }
-        "118" { $os.OsOperatingSystemSKU = "SKU is Windows Embedded Handheld" }
-        "123" { $os.OsOperatingSystemSKU = "SKU is Windows IoT (Internet of Things) Core" }
-        "143" { $os.OsOperatingSystemSKU = "SKU is Windows Server Datacenter Edition (Nano Server installation)" }
-        "144" { $os.OsOperatingSystemSKU = "SKU is Windows Server Standard Edition (Nano Server installation)" }
-        "147" { $os.OsOperatingSystemSKU = "SKU is Windows Server Datacenter Edition (Server Core installation)" }
-        "148" { $os.OsOperatingSystemSKU = "SKU is Windows Server Standard Edition (Server Core installation)" }
-    }
-    if ($null -eq $os.OsCSDVersion) {
-        $os.OsCSDVersion = "No service Pack Installed."
-    }
-    $os.OsCountryCode = "$($os.OsCountryCode) - country code based on international prefixes"
-
-    $os.OsCurrentTimeZone = "$($($os.OsCurrentTimeZone)/60) h from London Time"
     
-    $os.OsLocaleID = "$($os.OsCountryCode) - country code based on international prefixes"
-    $os.OsLocale = "$($os.OsLocale) - culture name derived from OsLocaleID"
-    $os.OsCodeSet = "$($os.OsCodeSet) - Code page operating system uses"
+    # TODO: $operatingSystem.OsHotFixes="list of values"
+    #! TODO: $operatingSystem.OsCountryCode="238 elements to translate code"
+    # TODO: $operatingSystem.OsPagingFiles="list of values" 
+    # TODO: $operatingSystem.OsMuiLanguages="list of values" 
+    # TODO: $operatingSystem.OsProductSuites="list of values" 
+    # TODO: $operatingSystem.OsSuites="list of values" 
+    
+    $operatingSystem = $computerInfo | Select-Object Os*
 
-    switch ($os.OsDataExecutionPreventionSupportPolicy) {
-        "AlwaysOff" { $os.OsDataExecutionPreventionSupportPolicy = "DEP is turned off for all 32-bit applications on the computer with no exceptions" }
-        "AlwaysOn" { $os.OsDataExecutionPreventionSupportPolicy = "DEP is enabled for all 32-bit applications on the computer" }
-        "OptIn" { $os.OsDataExecutionPreventionSupportPolicy = "DEP is enabled for a limited number of binaries, the kernel, and all Windows-based services. However, it is off by default for all 32-bit applications. A user or administrator must explicitly choose either the Always On or the Opt Out setting before DEP can be applied to 32-bit applications" }
-        "OptOff" { $os.OsDataExecutionPreventionSupportPolicy = "DEP is enabled by default for all 32-bit applications. A user or administrator can explicitly remove support for a 32-bit application by adding the application to an exceptions list" }
+    switch ($operatingSystem.OsOperatingSystemSKU) {
+        "0" { $operatingSystem.OsOperatingSystemSKU = "The SKU is undefined" }
+        "1" { $operatingSystem.OsOperatingSystemSKU = "SKU is Ultimate Edition" }
+        "2" { $operatingSystem.OsOperatingSystemSKU = "SKU is Home Basic Edition" }
+        "3" { $operatingSystem.OsOperatingSystemSKU = "SKU is Home Premium Edition" }
+        "4" { $operatingSystem.OsOperatingSystemSKU = "SKU is Enterprise Edition" }
+        "5" { $operatingSystem.OsOperatingSystemSKU = "SKU is Home Basic N Edition" }
+        "6" { $operatingSystem.OsOperatingSystemSKU = "SKU is Business Edition" }
+        "7" { $operatingSystem.OsOperatingSystemSKU = "SKU is Standard Server Edition" }
+        "8" { $operatingSystem.OsOperatingSystemSKU = "SKU is Datacenter Server Edition" }
+        "9" { $operatingSystem.OsOperatingSystemSKU = "SKU is Small Business Server Edition" }
+        "10" { $operatingSystem.OsOperatingSystemSKU = "SKU is Enterprise Server Edition" }
+        "11" { $operatingSystem.OsOperatingSystemSKU = "SKU is Starter Edition" }
+        "12" { $operatingSystem.OsOperatingSystemSKU = "SKU is Datacenter Server Core Edition" }
+        "13" { $operatingSystem.OsOperatingSystemSKU = "SKU is Standard Server Core Edition" }
+        "14" { $operatingSystem.OsOperatingSystemSKU = "SKU is Enterprise Server Core Edition" }
+        "15" { $operatingSystem.OsOperatingSystemSKU = "SKU is Enterprise Server IA64 Edition" }
+        "16" { $operatingSystem.OsOperatingSystemSKU = "SKU is Business N Edition" }
+        "17" { $operatingSystem.OsOperatingSystemSKU = "SKU is Web Server Edition" }
+        "18" { $operatingSystem.OsOperatingSystemSKU = "SKU is Cluster Server Edition" }
+        "19" { $operatingSystem.OsOperatingSystemSKU = "SKU is Home Server Edition" }
+        "20" { $operatingSystem.OsOperatingSystemSKU = "SKU is Storage Express Server Edition" }
+        "21" { $operatingSystem.OsOperatingSystemSKU = "SKU is Storage Standard Server Edition" }
+        "22" { $operatingSystem.OsOperatingSystemSKU = "SKU is Storage Workgroup Server Edition" }
+        "23" { $operatingSystem.OsOperatingSystemSKU = "SKU is Storage Enterprise Server Edition" }
+        "24" { $operatingSystem.OsOperatingSystemSKU = "SKU is Server For Small Business Edition" }
+        "25" { $operatingSystem.OsOperatingSystemSKU = "SKU is Small Business Server Premium Edition" }
+        "27" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Enterprise" }
+        "28" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Ultimate" }
+        "29" { $operatingSystem.OsOperatingSystemSKU = "SKU is Web Server (core installation)" }
+        "33" { $operatingSystem.OsOperatingSystemSKU = "SKU is Server Foundation" }
+        "34" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Home Server" }
+        "36" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Standard without Hyper-V" }
+        "37" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Datacenter without Hyper-V (full installation)" }
+        "38" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Enterprise without Hyper-V (full installation)" }
+        "39" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Datacenter without Hyper-V (core installation)" }
+        "40" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Standard without Hyper-V (core installation)" }
+        "41" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Enterprise without Hyper-V (core installation)" }
+        "42" { $operatingSystem.OsOperatingSystemSKU = "SKU is Microsoft Hyper-V Server" }
+        "43" { $operatingSystem.OsOperatingSystemSKU = "SKU is Storage Server Express (core installation)" }
+        "44" { $operatingSystem.OsOperatingSystemSKU = "SKU is Storage Server Standard (core installation)" }
+        "45" { $operatingSystem.OsOperatingSystemSKU = "SKU is Storage Server Workgroup (core installation)" }
+        "46" { $operatingSystem.OsOperatingSystemSKU = "SKU is Storage Server Enterprise (core installation)" }
+        "48" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Professional" }
+        "50" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Essentials (Desktop Experience installation)" }
+        "63" { $operatingSystem.OsOperatingSystemSKU = "SKU is Small Business Server Premium (core installation)" }
+        "64" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Hyper Core V" }
+        "87" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Thin PC" }
+        "89" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Embedded Industry" }
+        "97" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows RT" }
+        "101" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Home" }
+        "103" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Professional with Media Center" }
+        "104" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Mobile" }
+        "118" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Embedded Handheld" }
+        "123" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows IoT (Internet of Things) Core" }
+        "143" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Datacenter Edition (Nano Server installation)" }
+        "144" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Standard Edition (Nano Server installation)" }
+        "147" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Datacenter Edition (Server Core installation)" }
+        "148" { $operatingSystem.OsOperatingSystemSKU = "SKU is Windows Server Standard Edition (Server Core installation)" }
     }
-    if ($os.OsDebug) {
-        $os.OsDebug = "The computer is debug build"
+    if ($null -eq $operatingSystem.OsCSDVersion) {
+        $operatingSystem.OsCSDVersion = "No service Pack Installed."
+    }
+    $operatingSystem.OsCountryCode = "$($operatingSystem.OsCountryCode) - country code based on international prefixes"
+
+    $operatingSystem.OsCurrentTimeZone = "$($($operatingSystem.OsCurrentTimeZone)/60) h from London Time"
+    
+    $operatingSystem.OsLocaleID = "$($operatingSystem.OsCountryCode) - country code based on international prefixes"
+    $operatingSystem.OsLocale = "$($operatingSystem.OsLocale) - culture name derived from OsLocaleID"
+    $operatingSystem.OsCodeSet = "$($operatingSystem.OsCodeSet) - Code page operating system uses"
+
+    switch ($operatingSystem.OsDataExecutionPreventionSupportPolicy) {
+        "AlwaysOff" { $operatingSystem.OsDataExecutionPreventionSupportPolicy = "DEP is turned off for all 32-bit applications on the computer with no exceptions" }
+        "AlwaysOn" { $operatingSystem.OsDataExecutionPreventionSupportPolicy = "DEP is enabled for all 32-bit applications on the computer" }
+        "OptIn" { $operatingSystem.OsDataExecutionPreventionSupportPolicy = "DEP is enabled for a limited number of binaries, the kernel, and all Windows-based services. However, it is off by default for all 32-bit applications. A user or administrator must explicitly choose either the Always On or the Opt Out setting before DEP can be applied to 32-bit applications" }
+        "OptOff" { $operatingSystem.OsDataExecutionPreventionSupportPolicy = "DEP is enabled by default for all 32-bit applications. A user or administrator can explicitly remove support for a 32-bit application by adding the application to an exceptions list" }
+    }
+    if ($operatingSystem.OsDebug) {
+        $operatingSystem.OsDebug = "The computer is debug build"
     }
     else {
-        $os.OsDebug = "The computer is not debug build"
+        $operatingSystem.OsDebug = "The computer is not debug build"
     }
-    if ($os.OsDistributed) {
-        $os.OsDistributed = "Computer works as cluster node"
-    }
-    else {
-        $os.OsDistributed = "Computer works single workstation"
-    }
-
-    $os.OsEncryptionLevel = "$($os.OsEncryptionLevel) bit - level of operating system encryption"
-
-    switch ($os.OsForegroundApplicationBoost) {
-        "Maximum" { $os.OsForegroundApplicationBoost = "$($os.OsForegroundApplicationBoost) - system boosts the quantum length by 18 for foreground application" }
-        "Minimum" { $os.OsForegroundApplicationBoost = "$($os.OsForegroundApplicationBoost) - system boosts the quantum length by 12 for foreground application" }
-        "None" { $os.OsForegroundApplicationBoost = "$($os.OsForegroundApplicationBoost) - system boosts the quantum length by 6 for foreground application" }
-    }
-    
-    $os.OsTotalVisibleMemorySize = "$($($os.OsTotalVisibleMemorySize)/1GB) GB - Total amount, in kilobytes, of physical memory available to the operating system. This value does not necessarily indicate the true amount of physical memory, but what is reported to the operating system as available to it."
-    
-    $os.OsFreePhysicalMemory = "$($($os.OsFreePhysicalMemory)/1GB) GB - Number, in kilobytes, of physical memory currently unused and available."
-    
-    $os.OsTotalVirtualMemorySize = "$($($os.OsTotalVirtualMemorySize)/1GB) GB - Number, in kilobytes, of virtual memory. For example, this may be calculated by adding the amount of total RAM to the amount of paging space, that is, adding the amount of memory in or aggregated by the computer system to the property, SizeStoredInPagingFiles."
-
-    $os.OsFreeVirtualMemory = "$($($os.OsFreeVirtualMemorySize)/1GB) GB - Number, in kilobytes, of virtual memory currently unused and available."
-
-    $os.OsInUseVirtualMemory = "$($($os.OsInUseVirtualMemory)/1GB) GB"
-
-    if ($null -ne $os.OsTotalSwapSpaceSize) {
-        $os.OsTotalSwapSpaceSize = "$($($os.OsTotalSwapSpaceSize)/1GB) GB - total swap size"
+    if ($operatingSystem.OsDistributed) {
+        $operatingSystem.OsDistributed = "Computer works as cluster node"
     }
     else {
-        $os.OsTotalSwapSpaceSize = "The swap space is not distinguished from page files."
-    }
-    
-    if ($os.OsSizeStoredInPagingFiles -eq 0) {
-        $os.OsSizeStoredInPagingFiles = "There are no paging files"
-    }
-    else {
-        $os.OsSizeStoredInPagingFiles = "$($os.OsSizeStoredInPagingFiles) KB paging file"
+        $operatingSystem.OsDistributed = "Computer works single workstation"
     }
 
-    $os.OsFreeSpaceInPagingFiles = "$($os.OsFreeSpaceInPagingFiles) KB - Number, in kilobytes, that can be mapped into the operating system paging files without causing any other pages to be swapped out"
+    $operatingSystem.OsEncryptionLevel = "$($operatingSystem.OsEncryptionLevel) bit - level of operating system encryption"
+
+    switch ($operatingSystem.OsForegroundApplicationBoost) {
+        "Maximum" { $operatingSystem.OsForegroundApplicationBoost = "$($operatingSystem.OsForegroundApplicationBoost) - system boosts the quantum length by 18 for foreground application" }
+        "Minimum" { $operatingSystem.OsForegroundApplicationBoost = "$($operatingSystem.OsForegroundApplicationBoost) - system boosts the quantum length by 12 for foreground application" }
+        "None" { $operatingSystem.OsForegroundApplicationBoost = "$($operatingSystem.OsForegroundApplicationBoost) - system boosts the quantum length by 6 for foreground application" }
+    }
     
-    # TODO: $os.OsPagingFiles = "$($os.OsPagingFiles) - array of field paths to the operating system paging files" - list of values
+    $operatingSystem.OsTotalVisibleMemorySize = "$($($operatingSystem.OsTotalVisibleMemorySize)/1GB) GB - Total amount, in kilobytes, of physical memory available to the operating system. This value does not necessarily indicate the true amount of physical memory, but what is reported to the operating system as available to it."
     
-    $os.OsHardwareAbstractionLayer = " $($os.OsHardwareAbstractionLayer) - version of the operating system's Hardware Abstraction Layer (HAL)"
+    $operatingSystem.OsFreePhysicalMemory = "$($($operatingSystem.OsFreePhysicalMemory)/1GB) GB - Number, in kilobytes, of physical memory currently unused and available."
     
-    $os.OsMaxNumberOfProcesses = "$($os.OsMaxNumberOfProcesses) maximum number of process contexts the operating system can support"
-    
-    $os.OsMaxProcessMemorySize = "$($os.OsMaxProcessMemorySize) maximum number of kilobytes of memory that can be allocated to a process"
-    
-    # TODO: $os.OsMuiLanguages = "$($os.OsMuiLanguages) array of languages installed on computer" - list of values
-    
-    $os.OsNumberOfProcesses = "$($os.OsNumberOfProcesses) - Number of process contexts currently loaded or running on the operating system"
-    
-    $os.OsNumberOfUsers = "$($os.OsNumberOfUsers) - Number of user sessions for which the operating system is storing state information currently"
-    
-    # TODO: $os.OsProductSuites #TODO: Returning Array. Table in Table? - list of values
-    if ($os.OsPAEEnabled) {
-        $os.OsPAEEnabled = "Physical Address extension are enabled by operating system on Intel processors"
+    $operatingSystem.OsTotalVirtualMemorySize = "$($($operatingSystem.OsTotalVirtualMemorySize)/1GB) GB - Number, in kilobytes, of virtual memory. For example, this may be calculated by adding the amount of total RAM to the amount of paging space, that is, adding the amount of memory in or aggregated by the computer system to the property, SizeStoredInPagingFiles."
+
+    $operatingSystem.OsFreeVirtualMemory = "$($($operatingSystem.OsFreeVirtualMemorySize)/1GB) GB - Number, in kilobytes, of virtual memory currently unused and available."
+
+    $operatingSystem.OsInUseVirtualMemory = "$($($operatingSystem.OsInUseVirtualMemory)/1GB) GB"
+
+    if ($null -ne $operatingSystem.OsTotalSwapSpaceSize) {
+        $operatingSystem.OsTotalSwapSpaceSize = "$($($operatingSystem.OsTotalSwapSpaceSize)/1GB) GB - total swap size"
     }
     else {
-        $os.OsPAEEnabled = "Physical Address extension are disabled by operating system on Intel processors"
+        $operatingSystem.OsTotalSwapSpaceSize = "The swap space is not distinguished from page files."
+    }
+    
+    if ($operatingSystem.OsSizeStoredInPagingFiles -eq 0) {
+        $operatingSystem.OsSizeStoredInPagingFiles = "There are no paging files"
+    }
+    else {
+        $operatingSystem.OsSizeStoredInPagingFiles = "$($operatingSystem.OsSizeStoredInPagingFiles) KB paging file"
     }
 
-    if ($os.OsPortableOperatingSystem) {
-        $os.OsPortableOperatingSystem = "System is booted from external device"
+    $operatingSystem.OsFreeSpaceInPagingFiles = "$($operatingSystem.OsFreeSpaceInPagingFiles) KB - Number, in kilobytes, that can be mapped into the operating system paging files without causing any other pages to be swapped out"
+    
+    # TODO: $operatingSystem.OsPagingFiles = "$($operatingSystem.OsPagingFiles)  array of field paths to the operating system paging files - list of values"
+    
+    $operatingSystem.OsHardwareAbstractionLayer = " $($operatingSystem.OsHardwareAbstractionLayer) - version of the operating system's Hardware Abstraction Layer (HAL)"
+    
+    $operatingSystem.OsMaxNumberOfProcesses = "$($operatingSystem.OsMaxNumberOfProcesses) maximum number of process contexts the operating system can support"
+    
+    $operatingSystem.OsMaxProcessMemorySize = "$($operatingSystem.OsMaxProcessMemorySize) maximum number of kilobytes of memory that can be allocated to a process"
+    
+    # TODO: $operatingSystem.OsMuiLanguages = "$($operatingSystem.OsMuiLanguages) array of languages installed on computer - list of values"
+    
+    $operatingSystem.OsNumberOfProcesses = "$($operatingSystem.OsNumberOfProcesses) - Number of process contexts currently loaded or running on the operating system"
+    
+    $operatingSystem.OsNumberOfUsers = "$($operatingSystem.OsNumberOfUsers) - Number of user sessions for which the operating system is storing state information currently"
+    
+    # TODO: $operatingSystem.OsProductSuites="list of values"
+
+    if ($operatingSystem.OsPAEEnabled) {
+        $operatingSystem.OsPAEEnabled = "Physical Address extension are enabled by operating system on Intel processors"
     }
     else {
-        $os.OsPortableOperatingSystem = "System is booted from local disk"
+        $operatingSystem.OsPAEEnabled = "Physical Address extension are disabled by operating system on Intel processors"
     }
-    if ($os.OsPrimary) {
-        $os.OsPrimary = "This system is primary OS."
+
+    if ($operatingSystem.OsPortableOperatingSystem) {
+        $operatingSystem.OsPortableOperatingSystem = "System is booted from external device"
     }
     else {
-        $os.OsPrimary = "This system is not primary OS."
+        $operatingSystem.OsPortableOperatingSystem = "System is booted from local disk"
+    }
+    if ($operatingSystem.OsPrimary) {
+        $operatingSystem.OsPrimary = "This system is primary OS."
+    }
+    else {
+        $operatingSystem.OsPrimary = "This system is not primary OS."
     }
     
     #endregion OperatingSystem
 
-    $os
+    $operatingSystem
 }
 
 function Get-BasicComputerInfo
@@ -682,6 +684,8 @@ $HTMLBody3 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).ComputerSyst
 $HTMLBody4 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).OperatingSystem)
 $HTMLBody5 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).HyperV)
 $HTMLBody6 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).DeviceGuard)
+
+$HTMLBody4
 
 $HTMLBody7 = New-HTMLTable -TableContent $(Get-MotherBoard)
 ############################################################################################################
