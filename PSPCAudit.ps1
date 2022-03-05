@@ -497,7 +497,7 @@ function Get-OperatingSystemInformation($computerInfo)
     
     # TODO: $operatingSystem.OsPagingFiles = "$($operatingSystem.OsPagingFiles)  array of field paths to the operating system paging files - list of values"
     
-    $operatingSystem.OsHardwareAbstractionLayer = " $($operatingSystem.OsHardwareAbstractionLayer) - version of the operating system's Hardware Abstraction Layer (HAL)"
+    $operatingSystem.OsHardwareAbstractionLayer = " $($operatingSystem.OsHardwareAbstractionLayer) - version of the operating system Hardware Abstraction Layer (HAL)"
     
     $operatingSystem.OsMaxNumberOfProcesses = "$($operatingSystem.OsMaxNumberOfProcesses) maximum number of process contexts the operating system can support"
     
@@ -684,8 +684,6 @@ $HTMLBody3 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).ComputerSyst
 $HTMLBody4 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).OperatingSystem)
 $HTMLBody5 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).HyperV)
 $HTMLBody6 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).DeviceGuard)
-
-$HTMLBody4
 
 $HTMLBody7 = New-HTMLTable -TableContent $(Get-MotherBoard)
 ############################################################################################################
