@@ -1,10 +1,14 @@
 # ? implement classes with strategy pattern
 # TODO: Implement function to create list of values
 
+
+###########################################
+
+
+
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-
 function Get-HyperVInformation()
 {
     [CmdletBinding()]
@@ -711,6 +715,10 @@ $HTMLBody6 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).DeviceGuard)
 
 $HTMLBody7 = New-HTMLTable -TableContent $(Get-MotherBoard)
 ############################################################################################################
+
+# @IN: NONE
+# @ACTION: changing data in dashboard
+# @OUT: Javascript code to inject into HTML file
 function New-JSScript()
 {
 $script=@"
@@ -739,6 +747,9 @@ $script=@"
 return $script
 }
 
+# @IN: NONE
+# @ACTION: information about stylesheet
+# @OUT: CSS code to inject into HTML file
 function New-HTMLHead()
 {
 $head=@"
@@ -752,7 +763,9 @@ $head=@"
 return $head
 }
 
-
+# @IN: NONE
+# @ACTION: creating dashboard and injecting operating system data into it
+# @OUT: full dashboard with data showing to user
 function New-HTMLBody()
 {
 $report=@"
