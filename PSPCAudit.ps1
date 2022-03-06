@@ -1,12 +1,18 @@
 # ? implement classes with strategy pattern
-
+# TODO: Implement function to create list of values
 
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-# TODO: Create Function with advanced parameters
-function Get-HyperVInformation($computerInfo)
+
+function Get-HyperVInformation()
 {
+    [CmdletBinding()]
+    param (
+        [Parameter(HelpMessage = "ComputerInfo Object for HyperV Information,Position=0")]
+        [Alias("ComputerInfoObject")]
+        $computerInfo
+    )
     #region HyperV
     $hyperV = $computerInfo | Select-Object HyperV*
 
@@ -48,9 +54,14 @@ function Get-HyperVInformation($computerInfo)
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-# TODO: Create Function with advanced parameters
-function Get-BasicComputerInformation($computerInfo)
+function Get-BasicComputerInformation()
 {
+    [CmdletBinding()]
+    param (
+        [Parameter(HelpMessage = "ComputerInfo Object for Basic Computer Information,Position=0")]
+        [Alias("ComputerInfoObject")]
+        $computerInfo
+    )
     #region Basic
     $basic=$computerInfo | Select-Object Windows*,TimeZone,LogonServer,PowerPlatformRole
     switch($basic.PowerPlatformRole)
@@ -70,18 +81,25 @@ function Get-BasicComputerInformation($computerInfo)
     $basic
 }
 
+
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-# TODO: Create Function with advanced parameters
-function Get-BiosInformation($computerInfo)
+function Get-BiosInformation()
 {
-    # TODO: $bios.BiosCharacteristics - list of values
+    [CmdletBinding()]
+    param (
+        [Parameter(HelpMessage = "ComputerInfo Object for Bios Information,Position=0")]
+        [Alias("ComputerInfoObject")]
+        $computerInfo
+    )
     
-    # TODO: $bios.BiosBIOSVersion - list of values
-    # TODO: $bios.BiosListOfLanguages - list of values
     $bios=$computerInfo | Select-Object Bios*
-    
+
+    #TODO: List of Values $bios.BiosCharacteristics
+    #TODO: List of Values $bios.BiosBIOSVersion
+    #TODO: List of Values $bios.BiosListOfLanguages
+
     switch($bios.BiosFirmwareType)
     {
         "Bios"{$bios.BiosFirmwareType="$($bios.BiosFirmwareType) - The computer booted in legacy BIOS mode"}
@@ -120,20 +138,25 @@ function Get-BiosInformation($computerInfo)
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-# TODO: Create Function with advanced parameters
-function Get-ComputerSystemInformation($computerInfo)
+function Get-ComputerSystemInformation()
 {
+    [CmdletBinding()]
+    param (
+        [Parameter(HelpMessage = "ComputerInfo Object for ComputerSystem Information,Position=0")]
+        [Alias("ComputerInfoObject")]
+        $computerInfo
+    )
     #region ComputerSystem
-
-    # TODO: $computerSystem.CsBootStatus - list of values
-    # TODO: $computerSystem.CsNetworkAdapters - list of values
-    # TODO: $computerSystem.CsOEMStringArray - list of values
-    # TODO: $computerSystem.CsPowerManagementCapabilities - list of values
-    # TODO: $computerSystem.CsRoles - list of values
-    # TODO: $computerSystem.CsSupportcontactDescription - list of values
 
     $computerSystem = $computerInfo | Select-Object Cs*
     
+    #TODO: List of Values$computerSystem.CsBootStatus #TODO: List of Values
+    #TODO: List of Values$computerSystem.CsNetworkAdapters #TODO: List of Values
+    #TODO: List of Values$computerSystem.CsOEMStringArray #TODO: List of Values
+    #TODO: List of Values$computerSystem.CsPowerManagementCapabilities #TODO: List of Values
+    #TODO: List of Values$computerSystem.CsRoles #TODO: List of Values
+    #TODO: List of Values$computerSystem.CsSupportcontactDescription #TODO: List of Values
+
     $computerSystem.CsAdminPasswordStatus = "$($computerSystem.CsAdminPasswordStatus) - Hardware security is $($computerSystem.CsAdminPasswordStatus)"
 
     if ($computerSystem.CsAutomaticManagedPagefile) {
@@ -324,28 +347,26 @@ function Get-ComputerSystemInformation($computerInfo)
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-# TODO: Create Function with advanced parameters
-function Get-DeviceGuardInformation($computerInfo)
+function Get-DeviceGuardInformation()
 {
+    [CmdletBinding()]
+    param (
+        [Parameter(HelpMessage = "ComputerInfo Object for DeviceGuard Information,Position=0")]
+        [Alias("ComputerInfoObject")]
+        $computerInfo
+    )
     #region DeviceGuard
-
-    #TODO: $deviceGuard.DeviceGuardRequiredSecurityProperties - list of values
-    #TODO: $deviceGuard.DeviceGuardAvailableSecurityProperties - list of values
-    #TODO: $deviceGuard.DeviceGuardSecurityServicesConfigured - list of values
-    #TODO: $deviceGuard.DeviceGuardSecurityServicesRunning - list of values
-    #TODO: $deviceGuard.DeviceGuardCodeIntegrityPolicyEnforcementStatus - list of values
-    #TODO: $deviceGuard.DeviceGuardUserModeCodeIntegrityPolicyEnforcementStatus - list of values
 
     $deviceGuard = $computerInfo | Select-Object DeviceGuard*
 
     $deviceGuard.DeviceGuardSmartStatus = "DeviceGuard is $($deviceGuard.DeviceGuardSmartStatus)"
 
-    $deviceGuard.DeviceGuardRequiredSecurityProperties
-    $deviceGuard.DeviceGuardAvailableSecurityProperties
-    $deviceGuard.DeviceGuardSecurityServicesConfigured
-    $deviceGuard.DeviceGuardSecurityServicesRunning
-    $deviceGuard.DeviceGuardCodeIntegrityPolicyEnforcementStatus
-    $deviceGuard.DeviceGuardUserModeCodeIntegrityPolicyEnforcementStatus
+    #TODO: List of Values$deviceGuard.DeviceGuardRequiredSecurityProperties #TODO: List of values
+    #TODO: List of Values$deviceGuard.DeviceGuardAvailableSecurityProperties #TODO: List of values
+    #TODO: List of Values$deviceGuard.DeviceGuardSecurityServicesConfigured #TODO: List of values
+    #TODO: List of Values$deviceGuard.DeviceGuardSecurityServicesRunning #TODO: List of values
+    #TODO: List of Values$deviceGuard.DeviceGuardCodeIntegrityPolicyEnforcementStatus #TODO: List of values
+    #TODO: List of Values$deviceGuard.DeviceGuardUserModeCodeIntegrityPolicyEnforcementStatus #TODO: List of values
 
     #endregion DeviceGuard
 
@@ -355,22 +376,25 @@ function Get-DeviceGuardInformation($computerInfo)
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-# TODO: Create Function with advanced parameters
-# TODO: Not working in HTML Why?
-
-function Get-OperatingSystemInformation($computerInfo)
+function Get-OperatingSystemInformation()
 {
+    [CmdletBinding()]
+    param (
+        [Parameter(HelpMessage = "ComputerInfo Object for OperatingSystem Information,Position=0")]
+        [Alias("ComputerInfoObject")]
+        $computerInfo
+    )
     #region OperatingSystem
-    
-    # TODO: $operatingSystem.OsHotFixes="list of values"
-    #! TODO: $operatingSystem.OsCountryCode="238 elements to translate code"
-    # TODO: $operatingSystem.OsPagingFiles="list of values" 
-    # TODO: $operatingSystem.OsMuiLanguages="list of values" 
-    # TODO: $operatingSystem.OsProductSuites="list of values" 
-    # TODO: $operatingSystem.OsSuites="list of values" 
-    
-    $operatingSystem = $computerInfo | Select-Object Os*
 
+    $operatingSystem = $computerInfo | Select-Object Os*
+    
+    #TODO: List of Values$operatingSystem.OsHotFixes # TODO: List of Values
+    #! TODO: "238 elements to translate code" $operatingSystem.OsCountryCode #! TODO: "238 elements to translate code"
+    #TODO: List of Values$operatingSystem.OsPagingFiles # TODO: List of Values
+    #TODO: List of Values$operatingSystem.OsMuiLanguages # TODO: List of Values
+    #TODO: List of Values$operatingSystem.OsProductSuites # TODO: List of Values
+    #TODO: List of Values$operatingSystem.OsSuites # TODO: List of Values
+    
     switch ($operatingSystem.OsOperatingSystemSKU) {
         "0" { $operatingSystem.OsOperatingSystemSKU = "The SKU is undefined" }
         "1" { $operatingSystem.OsOperatingSystemSKU = "SKU is Ultimate Edition" }
@@ -469,18 +493,18 @@ function Get-OperatingSystemInformation($computerInfo)
         "None" { $operatingSystem.OsForegroundApplicationBoost = "$($operatingSystem.OsForegroundApplicationBoost) - system boosts the quantum length by 6 for foreground application" }
     }
     
-    $operatingSystem.OsTotalVisibleMemorySize = "$($($operatingSystem.OsTotalVisibleMemorySize)/1GB) GB - Total amount, in kilobytes, of physical memory available to the operating system. This value does not necessarily indicate the true amount of physical memory, but what is reported to the operating system as available to it."
+    $operatingSystem.OsTotalVisibleMemorySize = "$($($operatingSystem.OsTotalVisibleMemorySize)/1MB) GB - Total amount, of physical memory available to the operating system. This value does not necessarily indicate the true amount of physical memory, but what is reported to the operating system as available to it."
     
-    $operatingSystem.OsFreePhysicalMemory = "$($($operatingSystem.OsFreePhysicalMemory)/1GB) GB - Number, in kilobytes, of physical memory currently unused and available."
+    $operatingSystem.OsFreePhysicalMemory = "$($($operatingSystem.OsFreePhysicalMemory)/1MB) GB - Number, of physical memory currently unused and available."
     
-    $operatingSystem.OsTotalVirtualMemorySize = "$($($operatingSystem.OsTotalVirtualMemorySize)/1GB) GB - Number, in kilobytes, of virtual memory. For example, this may be calculated by adding the amount of total RAM to the amount of paging space, that is, adding the amount of memory in or aggregated by the computer system to the property, SizeStoredInPagingFiles."
+    $operatingSystem.OsTotalVirtualMemorySize = "$($($operatingSystem.OsTotalVirtualMemorySize)/1MB) GB - Number, of virtual memory. For example, this may be calculated by adding the amount of total RAM to the amount of paging space, that is, adding the amount of memory in or aggregated by the computer system to the property, SizeStoredInPagingFiles."
 
-    $operatingSystem.OsFreeVirtualMemory = "$($($operatingSystem.OsFreeVirtualMemorySize)/1GB) GB - Number, in kilobytes, of virtual memory currently unused and available."
+    $operatingSystem.OsFreeVirtualMemory = "$($($operatingSystem.OsFreeVirtualMemory)/1MB) GB - Number, of virtual memory currently unused and available."
 
-    $operatingSystem.OsInUseVirtualMemory = "$($($operatingSystem.OsInUseVirtualMemory)/1GB) GB"
+    $operatingSystem.OsInUseVirtualMemory = "$($($operatingSystem.OsInUseVirtualMemory)/1MB) GB"
 
     if ($null -ne $operatingSystem.OsTotalSwapSpaceSize) {
-        $operatingSystem.OsTotalSwapSpaceSize = "$($($operatingSystem.OsTotalSwapSpaceSize)/1GB) GB - total swap size"
+        $operatingSystem.OsTotalSwapSpaceSize = "$($($operatingSystem.OsTotalSwapSpaceSize)/1MB) GB - total swap size"
     }
     else {
         $operatingSystem.OsTotalSwapSpaceSize = "The swap space is not distinguished from page files."
@@ -495,7 +519,7 @@ function Get-OperatingSystemInformation($computerInfo)
 
     $operatingSystem.OsFreeSpaceInPagingFiles = "$($operatingSystem.OsFreeSpaceInPagingFiles) KB - Number, in kilobytes, that can be mapped into the operating system paging files without causing any other pages to be swapped out"
     
-    # TODO: $operatingSystem.OsPagingFiles = "$($operatingSystem.OsPagingFiles)  array of field paths to the operating system paging files - list of values"
+    # TODO: List of Values $operatingSystem.OsPagingFiles = "$($operatingSystem.OsPagingFiles)  array of field paths to the operating system paging files" # TODO: List of Values
     
     $operatingSystem.OsHardwareAbstractionLayer = " $($operatingSystem.OsHardwareAbstractionLayer) - version of the operating system Hardware Abstraction Layer (HAL)"
     
@@ -503,13 +527,13 @@ function Get-OperatingSystemInformation($computerInfo)
     
     $operatingSystem.OsMaxProcessMemorySize = "$($operatingSystem.OsMaxProcessMemorySize) maximum number of kilobytes of memory that can be allocated to a process"
     
-    # TODO: $operatingSystem.OsMuiLanguages = "$($operatingSystem.OsMuiLanguages) array of languages installed on computer - list of values"
+    # TODO: List of Values $operatingSystem.OsMuiLanguages = "$($operatingSystem.OsMuiLanguages) array of languages installed on computer" # TODO: List of Values
     
     $operatingSystem.OsNumberOfProcesses = "$($operatingSystem.OsNumberOfProcesses) - Number of process contexts currently loaded or running on the operating system"
     
     $operatingSystem.OsNumberOfUsers = "$($operatingSystem.OsNumberOfUsers) - Number of user sessions for which the operating system is storing state information currently"
     
-    # TODO: $operatingSystem.OsProductSuites="list of values"
+    # TODO: List of Values $operatingSystem.OsProductSuites # TODO: List of Values
 
     if ($operatingSystem.OsPAEEnabled) {
         $operatingSystem.OsPAEEnabled = "Physical Address extension are enabled by operating system on Intel processors"
@@ -559,12 +583,12 @@ function Get-BasicComputerInfo
     #endregion DeviceGuard
 
     $basicInformation = [PSCustomObject]@{
-        BasicInformation = Get-BasicComputerInformation($computerInfo)
-        Bios             = Get-BiosInformation($computerInfo)
-        ComputerSystem   = Get-ComputerSystemInformation($computerInfo)
-        OperatingSystem  = Get-OperatingSystemInformation($computerInfo)
-        HyperV           = Get-HyperVInformation($computerInfo)
-        DeviceGuard      = Get-DeviceGuardInformation($computerInfo)
+        BasicInformation = Get-BasicComputerInformation -ComputerInfoObject $computerInfo
+        Bios             = Get-BiosInformation -ComputerInfoObject $computerInfo
+        ComputerSystem   = Get-ComputerSystemInformation -ComputerInfoObject $computerInfo
+        OperatingSystem  = Get-OperatingSystemInformation -ComputerInfoObject $computerInfo
+        HyperV           = Get-HyperVInformation -ComputerInfoObject $computerInfo
+        DeviceGuard      = Get-DeviceGuardInformation -ComputerInfoObject $computerInfo
     }
     $basicInformation
 }
@@ -756,6 +780,7 @@ $(New-HTMLHead)
         
         <a class="w3-bar-item w3-button" >Link 3</a>
         
+
     </div>
     
     <div class="w3-container" id="lama" style="margin-left:160px">
