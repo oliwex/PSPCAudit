@@ -674,8 +674,7 @@ function New-HTMLTable()
     [Alias("TableContent","TC")]
     $content
     )
-
-    $output="<table><tr><td>KEY</td><td>VALUE</td></tr>"
+    $output = "<table class=`&quot w3-table-all w3-bordered w3-striped w3-border w3-hoverable`&quot><tr class=w3-green><td>KEY</td><td>VALUE</td></tr>"
     $content.PSObject.Properties | ForEach-Object { 
         $output += "<tr><td>$($_.Name)</td><td>$($_.Value)</td></tr>"
     }
@@ -742,7 +741,7 @@ $script=@"
             x.previousElementSibling.className.replace(" w3-green", "");
         }
     }
-        </script>
+    </script>
 "@
 return $script
 }
@@ -758,7 +757,7 @@ $head=@"
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
+        
 "@
 return $head
 }
