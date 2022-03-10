@@ -1,7 +1,7 @@
 # ? implement classes with strategy pattern
 # ? try to rewrite css rules by own css rules
-
-
+# auditpol /get /category:*
+# $(wmic qfe list full /format:table)
 
 ###########################################
 
@@ -587,28 +587,35 @@ function Get-OperatingSystemInformation()
     $operatingSystem
 }
 
+#TEST
+function Get-WindowsUpdates
+{
+    #$(wmic qfe list full /format:table)
+    #
+    Get-CimInstance Win32_Patch
+    #
+    $Session = New-Object -ComObject "Microsoft.Update.Session"
+    $Searcher = $Session.CreateUpdateSearcher()
+
+    $historyCount = $Searcher.GetTotalHistoryCount()
+
+    $Searcher.QueryHistory(0, $historyCount) | Select-Object Title, Description, Date,
+
+    @{name = "Operation"; expression = { switch ($_.operation) {
+
+                1 { "Installation" }; 2 { "Uninstallation" }; 3 { "Other" }
+
+            } }
+    } | Measure-Object
+
+}
+
+
+
 function Get-BasicComputerInfo
 {
     $computerInfo=Get-ComputerInfo
     
-    #region Basic
-    #region Basic
-    
-    #region BIOS
-    #endregion BIOS
-
-    #region ComputerSystem
-    #endregion ComputerSystem
-
-    #region OperatingSystem
-    #endregion OperatingSystem
-    
-    #region HyperV
-    #endregion HyperV
-    
-    #region DeviceGuard
-    #endregion DeviceGuard
-
     $basicInformation = [PSCustomObject]@{
         BasicInformation = Get-BasicComputerInformation -ComputerInfoObject $computerInfo
         Bios             = Get-BiosInformation -ComputerInfoObject $computerInfo
