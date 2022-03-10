@@ -1,0 +1,50 @@
+<style>
+        html,body
+        {
+            font-size: 11px !important;
+        }
+        .w3-bar-block .w3-bar-item, .w3-btn,.w3-button
+        {
+            padding: 5px 10px 5px 10px !important;
+        }
+        table
+        {
+            border-collapse:collapse;
+            border-spacing:0;
+            width:80%;
+            margin: 0 auto;
+            display:table;
+            border:1px solid #ccc;
+        }
+        table tr:first-child
+        {
+            background-color: #4CAF50 !important;
+            text-align:center !important;
+            color: #FFFFFF !important;
+        }
+        table tr
+        {
+            border-bottom:1px solid #ddd;
+        }
+        table tr:nth-child(odd)
+        {
+            background-color:#fff
+        }
+        table tr:nth-child(even)
+        {
+            background-color:#f1f1f1
+        }
+        table td,table th
+        {
+            padding:5px 5px 5px 5px !important;
+            display:table-cell;
+            text-align:left;
+            vertical-align:top
+        }
+        .w3-table-all th:first-child,.w3-table-all td:first-child
+        {
+            padding-left:16px;
+        }
+        
+        </style>
+    </head>

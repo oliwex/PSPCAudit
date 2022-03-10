@@ -1,11 +1,50 @@
 # ? implement classes with strategy pattern
-# TODO: Implement function to create list of values
+# ? try to rewrite css rules by own css rules
+
 
 
 ###########################################
 
+#region HTMLFunctions
 
+# @IN: PSCustomObject with Get-ComputerInfo information
+# @ACTION: creating list in HTML language
+# @OUT: HTML code with @IN information
+function New-HTMLList() {
+    [CmdletBinding()]
+    param (
+        [Parameter(HelpMessage = "List Content,Position=0")]
+        [Alias("ListContent", "LC")]
+        $content
+    )
 
+    $output = "<ul class=`&quot w3-ul `&quot>"
+    $content | ForEach-Object {
+        $output += "<li>$($_)</li>"
+    }
+    $output += "</ul>"
+    return $output
+}
+
+# @IN: PSCustomObject with Get-ComputerInfo information
+# @ACTION: creating table in HTML language
+# @OUT: HTML code with @IN information
+function New-HTMLTable() {
+    [CmdletBinding()]
+    param (
+        [Parameter(HelpMessage = "Table content,Position=0")]
+        [Alias("TableContent", "TC")]
+        $content
+    )
+    $output = "<table class=`&quot w3-table-all w3-bordered w3-striped w3-border w3-hoverable `&quot><tr class=w3-green><td>KEY</td><td>VALUE</td></tr>"
+    $content.PSObject.Properties | ForEach-Object { 
+        $output += "<tr><td>$($_.Name)</td><td>$($_.Value)</td></tr>"
+    }
+    $output += "</table>"
+    return $output
+}
+
+#endregion HTMLFunctions
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
@@ -100,10 +139,8 @@ function Get-BiosInformation()
     
     $bios=$computerInfo | Select-Object Bios*
 
-    #TODO: List of Values $bios.BiosCharacteristics
-    #TODO: List of Values $bios.BiosBIOSVersion
-    #TODO: List of Values $bios.BiosListOfLanguages
 
+    $bios.BiosBIOSVersion = New-HTMLList -ListContent $($bios.BiosBIOSVersion)
     switch($bios.BiosFirmwareType)
     {
         "Bios"{$bios.BiosFirmwareType="$($bios.BiosFirmwareType) - The computer booted in legacy BIOS mode"}
@@ -111,6 +148,7 @@ function Get-BiosInformation()
         "Uefi"{$bios.BiosFirmwareType="$($bios.BiosFirmwareType) - The computer booted in UEFI mode"}
         "Unknown"{$bios.BiosFirmwareType="$($bios.BiosFirmwareType) - The firmware type is unknown"}
     }
+    $bios.BiosListOfLanguages = New-HTMLList -ListContent $($bios.BiosListOfLanguages)
     if ($bios.BiosPrimaryBIOS)
     {
         $bios.BiosPrimaryBIOS="Primary BIOS of computerSystem"
@@ -134,8 +172,6 @@ function Get-BiosInformation()
     
     $bios.BiosSoftwareElementState="$($bios.BiosSoftwareElementState) - Software element is $($bios.BiosSoftwareElementState)"
 
-    #endregion BIOS
-
     $bios
 }
 
@@ -150,17 +186,9 @@ function Get-ComputerSystemInformation()
         [Alias("ComputerInfoObject")]
         $computerInfo
     )
-    #region ComputerSystem
 
     $computerSystem = $computerInfo | Select-Object Cs*
     
-    #TODO: List of Values$computerSystem.CsBootStatus #TODO: List of Values
-    #TODO: List of Values$computerSystem.CsNetworkAdapters #TODO: List of Values
-    #TODO: List of Values$computerSystem.CsOEMStringArray #TODO: List of Values
-    #TODO: List of Values$computerSystem.CsPowerManagementCapabilities #TODO: List of Values
-    #TODO: List of Values$computerSystem.CsRoles #TODO: List of Values
-    #TODO: List of Values$computerSystem.CsSupportcontactDescription #TODO: List of Values
-
     $computerSystem.CsAdminPasswordStatus = "$($computerSystem.CsAdminPasswordStatus) - Hardware security is $($computerSystem.CsAdminPasswordStatus)"
 
     if ($computerSystem.CsAutomaticManagedPagefile) {
@@ -204,6 +232,7 @@ function Get-ComputerSystemInformation()
     else {
         $computerSystem.CsBootROMSupported = "Boot ROM is not supported"
     }
+    $computerSystem.CsBootStatus = New-HTMLList -ListContent $($computerSystem.CsBootStatus)
 
     if ($computerSystem.CsChassisBootupState -like "Other") {
         $computerSystem.CsChassisBootupState = "$($computerSystem.CsChassisBootupState) - The element is something other than in documentation" 
@@ -242,6 +271,8 @@ function Get-ComputerSystemInformation()
 
     $computerSystem.CsKeyboardPasswordStatus = "Hardware security setting for keyboard password status is $($computerSystem.CsKeyboardPasswordStatus)"
 
+    $computerSystem.CsNetworkAdapters = New-HTMLList -ListContent $($computerSystem.CsNetworkAdapters) # Object
+
     if ($computerSystem.CsNetworkServerModeEnabled) {
         $computerSystem.CsNetworkServerModeEnabled = "Server Mode is Enabled"
     }
@@ -249,10 +280,11 @@ function Get-ComputerSystemInformation()
         $computerSystem.CsNetworkServerModeEnabled = "Server Mode is Disabled"    
     }
 
-
     $computerSystem.CsNumberOfLogicalProcessors = "$($computerSystem.CsNumberOfLogicalProcessors) - Number of Processor threads enabled for system"
     $computerSystem.CsNumberOfProcessors = "$($computerSystem.CsNumberOfProcessors) - Number of Processors enabled for system"
-
+    $computerSystem.CsProcessors = New-HTMLList -ListContent $($computerSystem.CsProcessors)
+    $computerSystem.CsOEMStringArray = New-HTMLList -ListContent $($computerSystem.CsOEMStringArray)
+    
 
     if ($computerSystem.CsPauseAfterReset -eq -1) {
         $computerSystem.CsPauseAfterReset = "Time Delay before reboot is initaited value is unknown"
@@ -287,12 +319,14 @@ function Get-ComputerSystemInformation()
         "Unspecified" { $computerSystem.CsPCSystemTypeEx = "$($computerSystem.CsPCSystemTypeEx) - UnspecifieThe OEM did not specify a specific role" }
         "Workstation" { $computerSystem.CsPCSystemTypeEx = "$($computerSystem.CsPCSystemTypeEx) - The OEM specified a workstation role" }
     }
+    $computerSystem.CsPowerManagementCapabilities = New-HTMLList -ListContent $($computerSystem.CsPowerManagementCapabilities)
     if ($computerSystem.CsPowerManagementSupported) {
         $computerSystem.CsPowerManagementSupported = "Device can be power managed. Property does not indicate that power management features are not enabled currently, but it indicates that the device is capable of power management."       
     }
     else {
         $computerSystem.CsPowerManagementSupported = "Device cannot be power managed."   
     }
+
     $computerSystem.CsPowerOnPasswordStatus = "$($computerSystem.CsPowerOnPasswordStatus) - Hardware security setting for PowerOn Password Status is $($computerSystem.CsPowerOnPasswordStatus)"
 
     $computerSystem.CsPowerState = "$($computerSystem.CsPowerState) - Current power state of computer is  $($computerSystem.CsPowerState)"
@@ -320,18 +354,19 @@ function Get-ComputerSystemInformation()
     else {
         $computerSystem.CsResetLimit = "Number of consecutive times a system reset is attempted. The value is $($computerSystem.CsResetLimit)" 
     }
+    $computerSystem.CsRoles = New-HTMLList -ListContent $($computerSystem.CsRoles)
 
     $computerSystem.CsSystemSKUNumber = "$($computerSystem.CsSystemSKUNumber) - identifies computer configuration  for sale. It is product ID or purcharse order number" 
-
+    
     if ($computerSystem.CsThermalState -eq "Other") {
         $computerSystem.CsThermalState = "$($computerSystem.CsThermalState) - Element is in state other than provided in documentation"    
     }
     else {
         $computerSystem.CsThermalState = "$($computerSystem.CsThermalState) - Element is in $($computerSystem.CsThermalState) state"
     }
+    $computerSystem.CsSupportcontactDescription = New-HTMLList -ListContent $($computerSystem.CsSupportcontactDescription)
     $computerSystem.CsTotalPhysicalMemory = "$($($computerSystem.CsTotalPhysicalMemory)/1GB)GB - it is physically installed memory without memory used by system"
     $computerSystem.CsPhysicallyInstalledMemory = "$($($computerSystem.CsPhyicallyInstalledMemory)/1MB) GB"
-
 
     switch ($computerSystem.CsWakeUpType) {
         "ACPowerRestored" { $computerSystem.CsWakeUpType = "ACPower was restored" }
@@ -344,7 +379,6 @@ function Get-ComputerSystemInformation()
         "Unknown" { $computerSystem.CsWakeUpType = "Event type is unknown" }
     }
 
-    #endregion ComputerSystem
     $computerSystem
 }
 
@@ -359,23 +393,16 @@ function Get-DeviceGuardInformation()
         [Alias("ComputerInfoObject")]
         $computerInfo
     )
-    #region DeviceGuard
-
     $deviceGuard = $computerInfo | Select-Object DeviceGuard*
-
     $deviceGuard.DeviceGuardSmartStatus = "DeviceGuard is $($deviceGuard.DeviceGuardSmartStatus)"
-
-    #TODO: List of Values$deviceGuard.DeviceGuardRequiredSecurityProperties #TODO: List of values
-    #TODO: List of Values$deviceGuard.DeviceGuardAvailableSecurityProperties #TODO: List of values
-    #TODO: List of Values$deviceGuard.DeviceGuardSecurityServicesConfigured #TODO: List of values
-    #TODO: List of Values$deviceGuard.DeviceGuardSecurityServicesRunning #TODO: List of values
-    #TODO: List of Values$deviceGuard.DeviceGuardCodeIntegrityPolicyEnforcementStatus #TODO: List of values
-    #TODO: List of Values$deviceGuard.DeviceGuardUserModeCodeIntegrityPolicyEnforcementStatus #TODO: List of values
-
-    #endregion DeviceGuard
+    $deviceGuard.DeviceGuardAvailableSecurityProperties = New-HTMLList -ListContent $($deviceGuard.DeviceGuardAvailableSecurityProperties)
+    $deviceGuard.DeviceGuardRequiredSecurityProperties = New-HTMLList -ListContent $($deviceGuard.DeviceGuardRequiredSecurityProperties)
+    $deviceGuard.DeviceGuardSecurityServicesConfigured = New-HTMLList -ListContent $($deviceGuard.DeviceGuardSecurityServicesConfigured)
+    $deviceGuard.DeviceGuardSecurityServicesRunning = New-HTMLList -ListContent $($deviceGuard.DeviceGuardSecurityServicesRunning)
 
     $deviceGuard
 }
+
 
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
@@ -388,16 +415,11 @@ function Get-OperatingSystemInformation()
         [Alias("ComputerInfoObject")]
         $computerInfo
     )
-    #region OperatingSystem
 
     $operatingSystem = $computerInfo | Select-Object Os*
+    $operatingSystem.OsHotFixes = New-HTMLList -ListContent $($operatingSystem.OsHotFixes) #Object
     
-    #TODO: List of Values$operatingSystem.OsHotFixes # TODO: List of Values
     #! TODO: "238 elements to translate code" $operatingSystem.OsCountryCode #! TODO: "238 elements to translate code"
-    #TODO: List of Values$operatingSystem.OsPagingFiles # TODO: List of Values
-    #TODO: List of Values$operatingSystem.OsMuiLanguages # TODO: List of Values
-    #TODO: List of Values$operatingSystem.OsProductSuites # TODO: List of Values
-    #TODO: List of Values$operatingSystem.OsSuites # TODO: List of Values
     
     switch ($operatingSystem.OsOperatingSystemSKU) {
         "0" { $operatingSystem.OsOperatingSystemSKU = "The SKU is undefined" }
@@ -504,7 +526,8 @@ function Get-OperatingSystemInformation()
     $operatingSystem.OsTotalVirtualMemorySize = "$($($operatingSystem.OsTotalVirtualMemorySize)/1MB) GB - Number, of virtual memory. For example, this may be calculated by adding the amount of total RAM to the amount of paging space, that is, adding the amount of memory in or aggregated by the computer system to the property, SizeStoredInPagingFiles."
 
     $operatingSystem.OsFreeVirtualMemory = "$($($operatingSystem.OsFreeVirtualMemory)/1MB) GB - Number, of virtual memory currently unused and available."
-
+    
+    
     $operatingSystem.OsInUseVirtualMemory = "$($($operatingSystem.OsInUseVirtualMemory)/1MB) GB"
 
     if ($null -ne $operatingSystem.OsTotalSwapSpaceSize) {
@@ -523,7 +546,7 @@ function Get-OperatingSystemInformation()
 
     $operatingSystem.OsFreeSpaceInPagingFiles = "$($operatingSystem.OsFreeSpaceInPagingFiles) KB - Number, in kilobytes, that can be mapped into the operating system paging files without causing any other pages to be swapped out"
     
-    # TODO: List of Values $operatingSystem.OsPagingFiles = "$($operatingSystem.OsPagingFiles)  array of field paths to the operating system paging files" # TODO: List of Values
+    $operatingSystem.OsPagingFiles = New-HTMLList -ListContent $($operatingSystem.OsPagingFiles)
     
     $operatingSystem.OsHardwareAbstractionLayer = " $($operatingSystem.OsHardwareAbstractionLayer) - version of the operating system Hardware Abstraction Layer (HAL)"
     
@@ -531,13 +554,13 @@ function Get-OperatingSystemInformation()
     
     $operatingSystem.OsMaxProcessMemorySize = "$($operatingSystem.OsMaxProcessMemorySize) maximum number of kilobytes of memory that can be allocated to a process"
     
-    # TODO: List of Values $operatingSystem.OsMuiLanguages = "$($operatingSystem.OsMuiLanguages) array of languages installed on computer" # TODO: List of Values
+    $operatingSystem.OsMuiLanguages = New-HTMLList -ListContent $($operatingSystem.OsMuiLanguages)
     
     $operatingSystem.OsNumberOfProcesses = "$($operatingSystem.OsNumberOfProcesses) - Number of process contexts currently loaded or running on the operating system"
     
     $operatingSystem.OsNumberOfUsers = "$($operatingSystem.OsNumberOfUsers) - Number of user sessions for which the operating system is storing state information currently"
     
-    # TODO: List of Values $operatingSystem.OsProductSuites # TODO: List of Values
+    $operatingSystem.OsProductSuites = New-HTMLList -ListContent $($operatingSystem.OsProductSuites)
 
     if ($operatingSystem.OsPAEEnabled) {
         $operatingSystem.OsPAEEnabled = "Physical Address extension are enabled by operating system on Intel processors"
@@ -558,8 +581,8 @@ function Get-OperatingSystemInformation()
     else {
         $operatingSystem.OsPrimary = "This system is not primary OS."
     }
-    
-    #endregion OperatingSystem
+    $operatingSystem.OsSuites = New-HTMLList -ListContent $($operatingSystem.OsSuites)
+
 
     $operatingSystem
 }
@@ -661,49 +684,6 @@ Get-CimInstance Win32_BaseBoard | Select-Object * -ExcludeProperty CreationClass
 
 }
 
-#region HTMLStructures
-
-# @IN: PSCustomObject with Get-ComputerInfo information
-# @ACTION: creating table in HTML language
-# @OUT: HTML code with @IN information
-function New-HTMLTable()
-{
-    [CmdletBinding()]
-    param (
-    [Parameter(HelpMessage="Table content,Position=0")]
-    [Alias("TableContent","TC")]
-    $content
-    )
-
-    $output="<table><tr><td>KEY</td><td>VALUE</td></tr>"
-    $content.PSObject.Properties | ForEach-Object { 
-        $output += "<tr><td>$($_.Name)</td><td>$($_.Value)</td></tr>"
-    }
-    $output += "</table>"
-    return $output
-}
-
-
-# TEST
-function New-HTMLList() 
-{
-    [CmdletBinding()]
-    param (
-        [Parameter(HelpMessage = "List Content,Position=0")]
-        [Alias("ListContent", "LC")]
-        $content
-    )
-
-    $output = "<ul class='w3-ul w3-small'>"
-    $content | ForEach-Object {
-        $output += "<li>$($_)</li>"
-    }
-    $output += "</ul>"
-    return $output
-}
-#New-HTMLList -ListContent $(Get-ComputerInfo).BiosCharacteristics
-
-#endregion HTMLStructures
 
 #region HTMLDeclarations
 $HTMLBody1 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).BasicInformation)
@@ -742,7 +722,7 @@ $script=@"
             x.previousElementSibling.className.replace(" w3-green", "");
         }
     }
-        </script>
+    </script>
 "@
 return $script
 }
@@ -758,7 +738,7 @@ $head=@"
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    </head>
+        
 "@
 return $head
 }
@@ -777,7 +757,7 @@ $(New-HTMLHead)
         <a href="#" class="w3-bar-item w3-button">Link 1</a>
         
         <div class="w3-bar-item w3-button" onclick="myAccFunc()">
-            Accordion <i class="fa fa-caret-down"></i>
+            Basic <i class="fa fa-caret-down"></i>
         </div>
         
         <div id="demoAcc" class="w3-hide w3-white w3-card-4">
