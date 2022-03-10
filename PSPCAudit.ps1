@@ -45,7 +45,6 @@ function New-HTMLTable() {
 }
 
 #endregion HTMLFunctions
-
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
@@ -140,7 +139,7 @@ function Get-BiosInformation()
     
     $bios=$computerInfo | Select-Object Bios*
 
-    $bios.BiosCharacteristics
+
     $bios.BiosBIOSVersion = New-HTMLList -ListContent $($bios.BiosBIOSVersion)
     switch($bios.BiosFirmwareType)
     {
@@ -272,7 +271,7 @@ function Get-ComputerSystemInformation()
 
     $computerSystem.CsKeyboardPasswordStatus = "Hardware security setting for keyboard password status is $($computerSystem.CsKeyboardPasswordStatus)"
 
-    $computerSystem.CsNetworkAdapters = New-HTMLList -ListContent $($computerSystem.CsNetworkAdapters)
+    $computerSystem.CsNetworkAdapters = New-HTMLList -ListContent $($computerSystem.CsNetworkAdapters) # Object
 
     if ($computerSystem.CsNetworkServerModeEnabled) {
         $computerSystem.CsNetworkServerModeEnabled = "Server Mode is Enabled"
@@ -418,7 +417,7 @@ function Get-OperatingSystemInformation()
     )
 
     $operatingSystem = $computerInfo | Select-Object Os*
-    $operatingSystem.OsHotFixes = New-HTMLList -ListContent $($operatingSystem.OsHotFixes)
+    $operatingSystem.OsHotFixes = New-HTMLList -ListContent $($operatingSystem.OsHotFixes) #Object
     
     #! TODO: "238 elements to translate code" $operatingSystem.OsCountryCode #! TODO: "238 elements to translate code"
     
@@ -758,7 +757,7 @@ $(New-HTMLHead)
         <a href="#" class="w3-bar-item w3-button">Link 1</a>
         
         <div class="w3-bar-item w3-button" onclick="myAccFunc()">
-            Accordion <i class="fa fa-caret-down"></i>
+            Basic <i class="fa fa-caret-down"></i>
         </div>
         
         <div id="demoAcc" class="w3-hide w3-white w3-card-4">
