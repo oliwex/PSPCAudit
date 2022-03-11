@@ -588,27 +588,20 @@ function Get-OperatingSystemInformation()
 }
 
 #TEST
+#TODO: Extract every element from QueryHistory
+#TODO: Convert data into readable format like Hresult convert into "ERROR"
+#TODO: Return PSCustomObject
+#TODO: Show HTML
 function Get-WindowsUpdates
 {
-    #$(wmic qfe list full /format:table)
-    #
-    Get-CimInstance Win32_Patch
-    #
     $Session = New-Object -ComObject "Microsoft.Update.Session"
     $Searcher = $Session.CreateUpdateSearcher()
 
-    $historyCount = $Searcher.GetTotalHistoryCount()
-
-    $Searcher.QueryHistory(0, $historyCount) | Select-Object Title, Description, Date,
-
-    @{name = "Operation"; expression = { switch ($_.operation) {
-
-                1 { "Installation" }; 2 { "Uninstallation" }; 3 { "Other" }
-
-            } }
-    } | Measure-Object
+    $lama=$Searcher.QueryHistory(0, $Searcher.GetTotalHistoryCount()) 
+    $lama
 
 }
+
 
 
 
@@ -699,6 +692,8 @@ $HTMLBody3 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).ComputerSyst
 $HTMLBody4 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).OperatingSystem)
 $HTMLBody5 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).HyperV)
 $HTMLBody6 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).DeviceGuard)
+
+
 
 $HTMLBody7 = New-HTMLTable -TableContent $(Get-MotherBoard)
 ############################################################################################################
