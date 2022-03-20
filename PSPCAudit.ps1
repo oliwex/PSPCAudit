@@ -1,7 +1,6 @@
 # ? implement classes with strategy pattern
 # ? try to rewrite css rules by own css rules
 # auditpol /get /category:*
-# $(wmic qfe list full /format:table)
 
 ###########################################
 
@@ -785,44 +784,60 @@ Function Get-WindowsUpdateRecords {
             default { "Unknown $($update.AutoDownload)" }
         }
 
+        $operation=switch ($updateHistory.Operation)
+        {
+            1 { 'InProgress - The operation is in progress.' }
+            2 { 'Succeeded - The operation was completed successfully.' }
+            default { 'NotStarted - The operation is not started.' }
+        }
+
+        $resultCode = switch ($updateHistory.ResultCode) {
+            0 { 'NotStarted - The operation is not started.' }
+            1 { 'InProgress - The operation is in progress.' }
+            2 { 'Succeeded - The operation was completed successfully.' }
+            3 { 'SucceededWithErrors - The operation is complete, but one or more errors occurred during the operation. The results might be incomplete.' }
+            4 { 'Failed - The operation failed to complete.' }
+            5 { 'Aborted - The operation is canceled.' }
+            default { 'Unknown - Unknown result code' }
+        }
+
         [PSCustomObject]@{
             # User friendly info
             KB                   = 'KB{0}' -f (@($update.KBArticleIDs | ForEach-Object { $_ })[0])
-            Title                = $update.Title
-            Description          = $update.Description
+            Title                = $update.Title #OK
+            Description          = $update.Description #OK
             
-
             # Search filter critera
-            Type                 = $updateType
-            DeploymentAction     = $deploymentAction
-            AutoSelectOnWebSites = $update.AutoSelectOnWebSites
-            BrowseOnly           = $update.BrowseOnly
-            UpdateID             = $update.Identity.UpdateID
-            RevisionNumber       = $update.Identity.RevisionNumber
-            Categories           = @($update.Categories | ForEach-Object { $_.Name })
-            IsInstalled          = $update.IsInstalled
-            IsHidden             = $update.IsHidden
-            IsPresent            = $update.IsPresent
-            RebootRequired       = $update.RebootRequired
+            Type                 = $updateType #OK
+            DeploymentAction     = $deploymentAction #OK
+            AutoSelectOnWebSites = $update.AutoSelectOnWebSites #OK
+            BrowseOnly           = $update.BrowseOnly #OK
+            UpdateID             = $update.Identity.UpdateID #OK
+            RevisionNumber       = $update.Identity.RevisionNumber #TODO: Replace value
+            Categories           = @($update.Categories | ForEach-Object { $_.Name }) #TODO: Create html lsit with categories
+            IsInstalled          = $update.IsInstalled #OK
+            IsHidden             = $update.IsHidden #OK
+            IsPresent            = $update.IsPresent #OK
+            RebootRequired       = $update.RebootRequired #OK
 
             # Extra info
-            Impact               = $impact
-            RebootBehavior       = $rebootBehavior
-            IsBeta               = $update.IsBeta
-            IsDownloaded         = $update.IsDownloaded
-            IsMandatory          = $update.IsMandatory
-            IsUninstallatble     = $update.IsUninstallable
-            AutoSelection        = $autoSelection
-            AutoDownload         = $autoDownload
+            Impact               = $impact  #OK
+            RebootBehavior       = $rebootBehavior #OK
+            IsBeta               = $update.IsBeta #OK
+            IsDownloaded         = $update.IsDownloaded #OK
+            IsMandatory          = $update.IsMandatory #OK
+            IsUninstallatble     = $update.IsUninstallable #OK
+            AutoSelection        = $autoSelection #OK
+            AutoDownload         = $autoDownload #OK
             
             # History info
-            Operation            = $updateHistory.Operation
-            ResultCode           = $updateHistory.ResultCode
-            HResult              = $updateHistory.HResult
-            Date                 = $updateHistory.Date
-            UpdateIdentity       = $updateHistory.UpdateIdentity
-            UnmappedResultCode   = $updateHistory.UnmappedResultCode
-            ServerSelection      = $updateHistory.ServerSelection
+            Operation            = New-HTMLList -ListContent $($operation)
+            ResultCode           = $resultCode #TODO: Create html lsit with categories
+            HResult              = $updateHistory.HResult #TODO: Create html lsit with categories
+            Date                 = $updateHistory.Date #TODO: Create html lsit with categories
+            UpdateIdentity       = $updateHistory.UpdateIdentity #TODO: Create html lsit with categories
+            UnmappedResultCode   = $updateHistory.UnmappedResultCode #TODO: Create html lsit with categories
+            ServerSelection      = $updateHistory.ServerSelection #TODO: Create html lsit with categories
             #ClientApplicationID
             ServiceID            = $updateHistory.ServiceID
             UninstallationSteps  = $updateHistory.UninstallationSteps
@@ -833,8 +848,14 @@ Function Get-WindowsUpdateRecords {
 
     $output
 }
+<#
+$test=$(Get-WindowsUpdateRecords)
 
-Get-WindowsUpdateRecords | Where-Object { $_.Title -like "*Internet Explorer 11 dla systemu Windows 7 - wersja dla systemów opartych na procesorach x64*" } | Select-Object Description | Format-List
+foreach($ts in $test)
+{
+    $ts | Select-Object ResultCode
+}
+#>
 
 
 
@@ -914,7 +935,6 @@ function Get-MotherBoard {
 
 }
 
-
 #region HTMLDeclarations
 $HTMLBody1 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).BasicInformation)
 $HTMLBody2 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).Bios)
@@ -923,8 +943,8 @@ $HTMLBody4 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).OperatingSys
 $HTMLBody5 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).HyperV)
 $HTMLBody6 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).DeviceGuard)
 
-$tests = $(Get-WindowsUpdateRecords)[0]
-$HTMLBody7=New-HTMLTable -TableContent $($tests)
+$tests = $(Get-WindowsUpdateRecords)[5]
+$HTMLBody7 = New-HTMLTable -TableContent $($tests)
 
 $HTMLBody8 = "TEST"
 
@@ -949,8 +969,7 @@ function New-JSScript() {
         }
         else {
             x.className = x.className.replace(" w3-show", "");
-            x.previousElementSibling.className =
-                x.previousElementSibling.className.replace(" w3-green", "");
+            x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
         }
     }
     function dropdownMenu2() 
@@ -962,8 +981,7 @@ function New-JSScript() {
         }
         else {
             x.className = x.className.replace(" w3-show", "");
-            x.previousElementSibling.className =
-                x.previousElementSibling.className.replace(" w3-green", "");
+            x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
         }
     }
     </script>
@@ -985,6 +1003,7 @@ function New-HTMLHead() {
 "@
     return $head
 }
+
 
 # @IN: NONE
 # @ACTION: creating dashboard and injecting operating system data into it
@@ -1033,4 +1052,5 @@ $(New-JSScript)
 
     return $report
 }
+
 New-HTMLBody | Out-File "H:\test.html"
