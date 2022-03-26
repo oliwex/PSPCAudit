@@ -783,7 +783,7 @@ Function Get-WindowsUpdateRecords {
             2 { 'AlwaysAutoDownload' }
             default { "Unknown $($update.AutoDownload)" }
         }
-
+        
         $operation=switch ($updateHistory.Operation)
         {
             1 { 'InProgress - The operation is in progress.' }
@@ -791,7 +791,8 @@ Function Get-WindowsUpdateRecords {
             default { 'NotStarted - The operation is not started.' }
         }
 
-        $resultCode = switch ($updateHistory.ResultCode) {
+        $resultCode = switch ($updateHistory.ResultCode) 
+        {
             0 { 'NotStarted - The operation is not started.' }
             1 { 'InProgress - The operation is in progress.' }
             2 { 'Succeeded - The operation was completed successfully.' }
@@ -801,6 +802,8 @@ Function Get-WindowsUpdateRecords {
             default { 'Unknown - Unknown result code' }
         }
 
+
+        
         [PSCustomObject]@{
             # User friendly info
             KB                   = 'KB{0}' -f (@($update.KBArticleIDs | ForEach-Object { $_ })[0])
@@ -831,31 +834,23 @@ Function Get-WindowsUpdateRecords {
             AutoDownload         = $autoDownload #OK
             
             # History info
-            Operation            = New-HTMLList -ListContent $($operation)
-            ResultCode           = $resultCode #TODO: Create html lsit with categories
-            HResult              = $updateHistory.HResult #TODO: Create html lsit with categories
-            Date                 = $updateHistory.Date #TODO: Create html lsit with categories
-            UpdateIdentity       = $updateHistory.UpdateIdentity #TODO: Create html lsit with categories
-            UnmappedResultCode   = $updateHistory.UnmappedResultCode #TODO: Create html lsit with categories
-            ServerSelection      = $updateHistory.ServerSelection #TODO: Create html lsit with categories
+            Operation            = New-HTMLList -ListContent $($operation) #OK
+            ResultCode           = New-HTMLList -ListContent $($resultCode) #OK
+            HResult              = New-HTMLList -ListContent $($updateHistory.HResult) #TODO: Replace Error Values with Write-WUError function
+            Date                 = New-HTMLList -ListContent $($updateHistory.Date) #OK
+            UpdateIdentity       = New-HTMLList -ListContent $($updateHistory.UpdateIdentity) # ? return System._Object - translating?
+            UnmappedResultCode   = New-HTMLList -ListContent $($updateHistory.UnmappedResultCode) #TODO: Replace Error Values with Write-WUError function
+            #ServerSelection      = $updateHistory.ServerSelection  #! ERROR - throws stacktrace
             #ClientApplicationID
-            ServiceID            = $updateHistory.ServiceID
-            UninstallationSteps  = $updateHistory.UninstallationSteps
-            UninstallationNotes  = $updateHistory.UninstallationNotes
-            SupportUrl           = $updateHistory.SupportUrl
+            ServiceID            = $updateHistory.ServiceID #TODO: 
+            UninstallationSteps  = $updateHistory.UninstallationSteps #TODO: 
+            UninstallationNotes  = $updateHistory.UninstallationNotes #TODO: 
+            SupportUrl           = $updateHistory.SupportUrl #TODO: 
         }
     }
 
     $output
 }
-<#
-$test=$(Get-WindowsUpdateRecords)
-
-foreach($ts in $test)
-{
-    $ts | Select-Object ResultCode
-}
-#>
 
 
 
@@ -943,7 +938,7 @@ $HTMLBody4 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).OperatingSys
 $HTMLBody5 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).HyperV)
 $HTMLBody6 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).DeviceGuard)
 
-$tests = $(Get-WindowsUpdateRecords)[5]
+$tests = $(Get-WindowsUpdateRecords)[0]
 $HTMLBody7 = New-HTMLTable -TableContent $($tests)
 
 $HTMLBody8 = "TEST"
