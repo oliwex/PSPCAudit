@@ -1,7 +1,6 @@
 # ? implement classes with strategy pattern
 # ? try to rewrite css rules by own css rules
 # auditpol /get /category:*
-# $(wmic qfe list full /format:table)
 
 ###########################################
 
@@ -30,6 +29,7 @@ function New-HTMLList() {
 # @ACTION: creating table in HTML language
 # @OUT: HTML code with @IN information
 function New-HTMLTable() {
+
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = "Table content,Position=0")]
@@ -48,8 +48,7 @@ function New-HTMLTable() {
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-function Get-HyperVInformation()
-{
+function Get-HyperVInformation() {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = "ComputerInfo Object for HyperV Information,Position=0")]
@@ -97,8 +96,7 @@ function Get-HyperVInformation()
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-function Get-BasicComputerInformation()
-{
+function Get-BasicComputerInformation() {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = "ComputerInfo Object for Basic Computer Information,Position=0")]
@@ -106,19 +104,18 @@ function Get-BasicComputerInformation()
         $computerInfo
     )
     #region Basic
-    $basic=$computerInfo | Select-Object Windows*,TimeZone,LogonServer,PowerPlatformRole
-    switch($basic.PowerPlatformRole)
-    {
-        "AppliancePC" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified an appliance PC role"}
-        "Desktop" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified a desktop role"}
-        "EnterpriseServer" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified an enterprise server role"}
-        "MaximumEnumValue" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - Max enum value"}
-        "Mobile" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified a mobile role (for example, a laptop)"}
-        "PerformanceServer" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified a performance server role"}
-        "Slate" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified a tablet form factor role"}
-        "SOHOServer" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified a single office/home office (SOHO) server role"}
-        "Unspecified" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - UnspecifieThe OEM did not specify a specific role"}
-        "Workstation" { $basic.PowerPlatformRole="$($basic.PowerPlatformRole) - The OEM specified a workstation role"}
+    $basic = $computerInfo | Select-Object Windows*, TimeZone, LogonServer, PowerPlatformRole
+    switch ($basic.PowerPlatformRole) {
+        "AppliancePC" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - The OEM specified an appliance PC role" }
+        "Desktop" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - The OEM specified a desktop role" }
+        "EnterpriseServer" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - The OEM specified an enterprise server role" }
+        "MaximumEnumValue" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - Max enum value" }
+        "Mobile" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - The OEM specified a mobile role (for example, a laptop)" }
+        "PerformanceServer" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - The OEM specified a performance server role" }
+        "Slate" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - The OEM specified a tablet form factor role" }
+        "SOHOServer" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - The OEM specified a single office/home office (SOHO) server role" }
+        "Unspecified" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - UnspecifieThe OEM did not specify a specific role" }
+        "Workstation" { $basic.PowerPlatformRole = "$($basic.PowerPlatformRole) - The OEM specified a workstation role" }
     }
     #endregion Basic
     $basic
@@ -128,8 +125,7 @@ function Get-BasicComputerInformation()
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-function Get-BiosInformation()
-{
+function Get-BiosInformation() {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = "ComputerInfo Object for Bios Information,Position=0")]
@@ -137,40 +133,34 @@ function Get-BiosInformation()
         $computerInfo
     )
     
-    $bios=$computerInfo | Select-Object Bios*
+    $bios = $computerInfo | Select-Object Bios*
 
 
     $bios.BiosBIOSVersion = New-HTMLList -ListContent $($bios.BiosBIOSVersion)
-    switch($bios.BiosFirmwareType)
-    {
-        "Bios"{$bios.BiosFirmwareType="$($bios.BiosFirmwareType) - The computer booted in legacy BIOS mode"}
-        "Max"{$bios.BiosFirmwareType="$($bios.BiosFirmwareType) - Not implemented"}
-        "Uefi"{$bios.BiosFirmwareType="$($bios.BiosFirmwareType) - The computer booted in UEFI mode"}
-        "Unknown"{$bios.BiosFirmwareType="$($bios.BiosFirmwareType) - The firmware type is unknown"}
+    switch ($bios.BiosFirmwareType) {
+        "Bios" { $bios.BiosFirmwareType = "$($bios.BiosFirmwareType) - The computer booted in legacy BIOS mode" }
+        "Max" { $bios.BiosFirmwareType = "$($bios.BiosFirmwareType) - Not implemented" }
+        "Uefi" { $bios.BiosFirmwareType = "$($bios.BiosFirmwareType) - The computer booted in UEFI mode" }
+        "Unknown" { $bios.BiosFirmwareType = "$($bios.BiosFirmwareType) - The firmware type is unknown" }
     }
     $bios.BiosListOfLanguages = New-HTMLList -ListContent $($bios.BiosListOfLanguages)
-    if ($bios.BiosPrimaryBIOS)
-    {
-        $bios.BiosPrimaryBIOS="Primary BIOS of computerSystem"
+    if ($bios.BiosPrimaryBIOS) {
+        $bios.BiosPrimaryBIOS = "Primary BIOS of computerSystem"
     }
-    else 
-    {
+    else {
         $bios.BiosPrimaryBIOS = "Not primary BIOS of computerSystem"    
     }
-    if($null -eq $bios.BiosSMBIOSMajorVersion)
-    {
-        $bios.BiosSMBIOSMajorVersion="SMBIOS Major Version not found"
+    if ($null -eq $bios.BiosSMBIOSMajorVersion) {
+        $bios.BiosSMBIOSMajorVersion = "SMBIOS Major Version not found"
     }
-    if($null -eq $bios.BiosSMBIOSMinorVersion)
-    {
-        $bios.BiosSMBIOSMinorVersion="SMBIOS Minor Version not found"
+    if ($null -eq $bios.BiosSMBIOSMinorVersion) {
+        $bios.BiosSMBIOSMinorVersion = "SMBIOS Minor Version not found"
     }
-    if($bios.BiosSMBIOSPresent -eq $true)
-    {
-        $bios.BiosSMBIOSPresent="SMBIOS is available on this computer system"
+    if ($bios.BiosSMBIOSPresent -eq $true) {
+        $bios.BiosSMBIOSPresent = "SMBIOS is available on this computer system"
     }
     
-    $bios.BiosSoftwareElementState="$($bios.BiosSoftwareElementState) - Software element is $($bios.BiosSoftwareElementState)"
+    $bios.BiosSoftwareElementState = "$($bios.BiosSoftwareElementState) - Software element is $($bios.BiosSoftwareElementState)"
 
     $bios
 }
@@ -178,8 +168,7 @@ function Get-BiosInformation()
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-function Get-ComputerSystemInformation()
-{
+function Get-ComputerSystemInformation() {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = "ComputerInfo Object for ComputerSystem Information,Position=0")]
@@ -385,8 +374,7 @@ function Get-ComputerSystemInformation()
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-function Get-DeviceGuardInformation()
-{
+function Get-DeviceGuardInformation() {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = "ComputerInfo Object for DeviceGuard Information,Position=0")]
@@ -407,8 +395,7 @@ function Get-DeviceGuardInformation()
 # @IN: PSCustomObject with Get-ComputerInfo information
 # @ACTION: editing information from @IN by adding information from Microsoft docs documentation
 # @OUT: edited information from @IN 
-function Get-OperatingSystemInformation()
-{
+function Get-OperatingSystemInformation() {
     [CmdletBinding()]
     param (
         [Parameter(HelpMessage = "ComputerInfo Object for OperatingSystem Information,Position=0")]
@@ -587,34 +574,9 @@ function Get-OperatingSystemInformation()
     $operatingSystem
 }
 
-#TEST
-function Get-WindowsUpdates
-{
-    #$(wmic qfe list full /format:table)
-    #
-    Get-CimInstance Win32_Patch
-    #
-    $Session = New-Object -ComObject "Microsoft.Update.Session"
-    $Searcher = $Session.CreateUpdateSearcher()
 
-    $historyCount = $Searcher.GetTotalHistoryCount()
-
-    $Searcher.QueryHistory(0, $historyCount) | Select-Object Title, Description, Date,
-
-    @{name = "Operation"; expression = { switch ($_.operation) {
-
-                1 { "Installation" }; 2 { "Uninstallation" }; 3 { "Other" }
-
-            } }
-    } | Measure-Object
-
-}
-
-
-
-function Get-BasicComputerInfo
-{
-    $computerInfo=Get-ComputerInfo
+function Get-BasicComputerInfo {
+    $computerInfo = Get-ComputerInfo
     
     $basicInformation = [PSCustomObject]@{
         BasicInformation = Get-BasicComputerInformation -ComputerInfoObject $computerInfo
@@ -628,69 +590,66 @@ function Get-BasicComputerInfo
 }
 
 # TODO
-function Get-HardwareInfo
-{
+function Get-HardwareInfo {
     $hardwareInformation = [PSCustomObject]@{
-        Controller1394 = Get-1394Controller
-        BaseBoard = Get-BaseBoard
-        Battery = Get-Battery
-        Bios             = Get-BIOS
-        Bus = Get-Bus
-        CacheMemory = Get-CacheMemory
-        CDROM = Get-CDROMDrive
-        CompactDisc = Get-CompactDisc
-        Desktop = Get-Desktop
-        DesktopMonitor = Get-DesktopMonitor
-        DiskDrive = Get-DiskDrive
-        DiskPartition = Get-DiskPartition
-        Fan=Get-Fan
-        Glide = Get-GlidePoint
-        HeatPipe = Get-HeatPipe
-        IDE=Get-IDEController
-        InfraredDevice=Get-InfraredDevice
-        Keyboard = Get-Keyboard
-        LocalDisk=Get-LocalDisk
-        LogicalDisk=Get-LogicalDisk
-        MemoryArray=Get-MemoryArray
-        MemoryDevice=Get-MemoryDevice
-        MotherBoardDevice=Get-MotherboardDevice
-        Mouse=Get-Mouse
-        NetworkAdapter=Get-NetworkAdapterSysInfo
-        NetworkAdapterConfiguration=Get-NetworkAdapterConfiguration
-        NetworkDrive=Get-NetworkDrive
-        OperatingSystem=Get-OperatingSystem
-        OpticalSensor=Get-OpticalSensor
-        PhysicalMemory=Get-PhysicalMemory
-        PhysicalMemoryArray=Get-PhysicalMemoryArray
-        PointingDevice=Get-PointingDevice
-        PortableBattery=Get-PortableBattery
-        PrinterConfiguration=Get-PrinterConfiguration
-        Processor=Get-Processor
-        RAMDisk=Get-RAMDisk
-        Refrigeration=Get-Refrigeration
-        RemovableDisk=Get-RemovableDisk
-        SCSIController=Get-SCSIControllerSysInfo
-        SoundDevice=Get-SoundDevice
-        SystemEnclousure=Get-SystemEnclosure
-        TapeDrive=Get-TapeDrive
-        TemperatureProbe=Get-TemperatureProbe
-        TouchPad=Get-TouchPad
-        TouchScreen=Get-TouchScreen
-        TrackBall=Get-TrackBall
-        TrackPoint=Get-TrackPoint
-        USBController=Get-USBController
-        VideoController=Get-VideoController
-        VoltageProbe=Get-VoltageProbe
+        Controller1394              = Get-1394Controller
+        BaseBoard                   = Get-BaseBoard
+        Battery                     = Get-Battery
+        Bios                        = Get-BIOS
+        Bus                         = Get-Bus
+        CacheMemory                 = Get-CacheMemory
+        CDROM                       = Get-CDROMDrive
+        CompactDisc                 = Get-CompactDisc
+        Desktop                     = Get-Desktop
+        DesktopMonitor              = Get-DesktopMonitor
+        DiskDrive                   = Get-DiskDrive
+        DiskPartition               = Get-DiskPartition
+        Fan                         = Get-Fan
+        Glide                       = Get-GlidePoint
+        HeatPipe                    = Get-HeatPipe
+        IDE                         = Get-IDEController
+        InfraredDevice              = Get-InfraredDevice
+        Keyboard                    = Get-Keyboard
+        LocalDisk                   = Get-LocalDisk
+        LogicalDisk                 = Get-LogicalDisk
+        MemoryArray                 = Get-MemoryArray
+        MemoryDevice                = Get-MemoryDevice
+        MotherBoardDevice           = Get-MotherboardDevice
+        Mouse                       = Get-Mouse
+        NetworkAdapter              = Get-NetworkAdapterSysInfo
+        NetworkAdapterConfiguration = Get-NetworkAdapterConfiguration
+        NetworkDrive                = Get-NetworkDrive
+        OperatingSystem             = Get-OperatingSystem
+        OpticalSensor               = Get-OpticalSensor
+        PhysicalMemory              = Get-PhysicalMemory
+        PhysicalMemoryArray         = Get-PhysicalMemoryArray
+        PointingDevice              = Get-PointingDevice
+        PortableBattery             = Get-PortableBattery
+        PrinterConfiguration        = Get-PrinterConfiguration
+        Processor                   = Get-Processor
+        RAMDisk                     = Get-RAMDisk
+        Refrigeration               = Get-Refrigeration
+        RemovableDisk               = Get-RemovableDisk
+        SCSIController              = Get-SCSIControllerSysInfo
+        SoundDevice                 = Get-SoundDevice
+        SystemEnclousure            = Get-SystemEnclosure
+        TapeDrive                   = Get-TapeDrive
+        TemperatureProbe            = Get-TemperatureProbe
+        TouchPad                    = Get-TouchPad
+        TouchScreen                 = Get-TouchScreen
+        TrackBall                   = Get-TrackBall
+        TrackPoint                  = Get-TrackPoint
+        USBController               = Get-USBController
+        VideoController             = Get-VideoController
+        VoltageProbe                = Get-VoltageProbe
     }
     $hardwareInformation
 }
 # TODO
-function Get-MotherBoard
-{
-Get-CimInstance Win32_BaseBoard | Select-Object * -ExcludeProperty CreationClassName,PSComputerName,Cim*
+function Get-MotherBoard {
+    Get-CimInstance Win32_BaseBoard | Select-Object * -ExcludeProperty CreationClassName, PSComputerName, Cim*
 
 }
-
 
 #region HTMLDeclarations
 $HTMLBody1 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).BasicInformation)
@@ -700,46 +659,57 @@ $HTMLBody4 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).OperatingSys
 $HTMLBody5 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).HyperV)
 $HTMLBody6 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).DeviceGuard)
 
-$HTMLBody7 = New-HTMLTable -TableContent $(Get-MotherBoard)
+
+
+
+$HTMLBody8 = "TEST"
+
 ############################################################################################################
 
 # @IN: NONE
 # @ACTION: changing data in dashboard
 # @OUT: Javascript code to inject into HTML file
-function New-JSScript()
-{
-$script=@"
+function New-JSScript() {
+    $script = @"
     <script>
     function changeContent(content) 
     {
         document.getElementById('lama').innerHTML = content;
     }
-    function myAccFunc() 
+    function dropdownMenu1() 
     {
-        var x = document.getElementById("demoAcc");
-        if (x.className.indexOf("w3-show") == -1) 
-        {
+        const x = document.getElementById("basic");
+        if (x.className.indexOf("w3-show") == -1) {
             x.className += " w3-show";
             x.previousElementSibling.className += " w3-green";
-        } 
-        else 
-        {
+        }
+        else {
             x.className = x.className.replace(" w3-show", "");
-            x.previousElementSibling.className =
-            x.previousElementSibling.className.replace(" w3-green", "");
+            x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
+        }
+    }
+    function dropdownMenu2() 
+    {
+        const x = document.getElementById("update");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+        }
+        else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
         }
     }
     </script>
 "@
-return $script
+    return $script
 }
 
 # @IN: NONE
 # @ACTION: information about stylesheet
 # @OUT: CSS code to inject into HTML file
-function New-HTMLHead()
-{
-$head=@"
+function New-HTMLHead() {
+    $head = @"
     <head>
         <title>W3.CSS</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -747,15 +717,15 @@ $head=@"
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         
 "@
-return $head
+    return $head
 }
+
 
 # @IN: NONE
 # @ACTION: creating dashboard and injecting operating system data into it
 # @OUT: full dashboard with data showing to user
-function New-HTMLBody()
-{
-$report=@"
+function New-HTMLBody() {
+    $report = @"
 <!DOCTYPE html>
 <html>
 $(New-HTMLHead)
@@ -763,11 +733,10 @@ $(New-HTMLHead)
     <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:160px;">
         <a href="#" class="w3-bar-item w3-button">Link 1</a>
         
-        <div class="w3-bar-item w3-button" onclick="myAccFunc()">
+        <div class="w3-bar-item w3-button" onclick="dropdownMenu1()">
             Basic <i class="fa fa-caret-down"></i>
         </div>
-        
-        <div id="demoAcc" class="w3-hide w3-white w3-card-4">
+        <div id="basic" class="w3-hide w3-white w3-card-4">
             <a class="w3-bar-item w3-button" onclick="changeContent('$HTMLBody1')">BasicInformation</a>
             <a class="w3-bar-item w3-button" onclick="changeContent('$HTMLBody2')">Bios</a>
             <a class="w3-bar-item w3-button" onclick="changeContent('$HTMLBody3')">ComputerSystem</a>
@@ -775,12 +744,12 @@ $(New-HTMLHead)
             <a class="w3-bar-item w3-button" onclick="changeContent('$HTMLBody5')">HyperV</a>
             <a class="w3-bar-item w3-button" onclick="changeContent('$HTMLBody6')">DeviceGuard</a>
         </div>
-        
-        <a class="w3-bar-item w3-button" onclick="changeContent('$HTMLBody7')">MotherBoard</a>
+
+
+        <a class="w3-bar-item w3-button" onclick="changeContent('$HTMLBody8')">MotherBoard</a>
         
         <a class="w3-bar-item w3-button" >Link 3</a>
         
-
     </div>
     
     <div class="w3-container" id="lama" style="margin-left:160px">
@@ -791,6 +760,7 @@ $(New-JSScript)
 </html>
 "@
 
-return $report
+    return $report
 }
+
 New-HTMLBody | Out-File "H:\test.html"
