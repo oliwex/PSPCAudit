@@ -341,4 +341,65 @@ $HTMLBody7 = New-HTMLTable -TableContent $($tests)
             <a class="w3-bar-item w3-button" onclick="changeContent('$HTMLBody7')">Update1</a>
         </div>
 
+#############################################################
+# TODO
+function Get-HardwareInfo {
+    $hardwareInformation = [PSCustomObject]@{
+        Controller1394              = Get-1394Controller
+        BaseBoard                   = Get-BaseBoard
+        Battery                     = Get-Battery
+        Bios                        = Get-BIOS
+        Bus                         = Get-Bus
+        CacheMemory                 = Get-CacheMemory
+        CDROM                       = Get-CDROMDrive
+        CompactDisc                 = Get-CompactDisc
+        Desktop                     = Get-Desktop
+        DesktopMonitor              = Get-DesktopMonitor
+        DiskDrive                   = Get-DiskDrive
+        DiskPartition               = Get-DiskPartition
+        Fan                         = Get-Fan
+        Glide                       = Get-GlidePoint
+        HeatPipe                    = Get-HeatPipe
+        IDE                         = Get-IDEController
+        InfraredDevice              = Get-InfraredDevice
+        Keyboard                    = Get-Keyboard
+        LocalDisk                   = Get-LocalDisk
+        LogicalDisk                 = Get-LogicalDisk
+        MemoryArray                 = Get-MemoryArray
+        MemoryDevice                = Get-MemoryDevice
+        MotherBoardDevice           = Get-MotherboardDevice
+        Mouse                       = Get-Mouse
+        NetworkAdapter              = Get-NetworkAdapterSysInfo
+        NetworkAdapterConfiguration = Get-NetworkAdapterConfiguration
+        NetworkDrive                = Get-NetworkDrive
+        OperatingSystem             = Get-OperatingSystem
+        OpticalSensor               = Get-OpticalSensor
+        PhysicalMemory              = Get-PhysicalMemory
+        PhysicalMemoryArray         = Get-PhysicalMemoryArray
+        PointingDevice              = Get-PointingDevice
+        PortableBattery             = Get-PortableBattery
+        PrinterConfiguration        = Get-PrinterConfiguration
+        Processor                   = Get-Processor
+        RAMDisk                     = Get-RAMDisk
+        Refrigeration               = Get-Refrigeration
+        RemovableDisk               = Get-RemovableDisk
+        SCSIController              = Get-SCSIControllerSysInfo
+        SoundDevice                 = Get-SoundDevice
+        SystemEnclousure            = Get-SystemEnclosure
+        TapeDrive                   = Get-TapeDrive
+        TemperatureProbe            = Get-TemperatureProbe
+        TouchPad                    = Get-TouchPad
+        TouchScreen                 = Get-TouchScreen
+        TrackBall                   = Get-TrackBall
+        TrackPoint                  = Get-TrackPoint
+        USBController               = Get-USBController
+        VideoController             = Get-VideoController
+        VoltageProbe                = Get-VoltageProbe
+    }
+    $hardwareInformation
+}
+# TODO
+function Get-MotherBoard {
+    Get-CimInstance Win32_BaseBoard | Select-Object * -ExcludeProperty CreationClassName, PSComputerName, Cim*
 
+}
