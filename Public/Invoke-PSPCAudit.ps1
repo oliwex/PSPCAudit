@@ -3,7 +3,8 @@
 # auditpol /get /category:*
 
 ###########################################
-
+function Invoke-PSPCAudit
+{
 $HTMLBody1 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).BasicInformation)
 $HTMLBody2 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).Bios)
 $HTMLBody3 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).ComputerSystem)
@@ -13,6 +14,7 @@ $HTMLBody6 = New-HTMLTable -TableContent $($(Get-BasicComputerInfo).DeviceGuard)
 
 $HTMLBody8 = "TEST"
 
-###########################################
+New-HTMLReport | Out-File "H:\test.html"
+}
 
-New-HTMLBody | Out-File "H:\test.html"
+

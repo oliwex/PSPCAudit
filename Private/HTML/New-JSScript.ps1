@@ -8,21 +8,9 @@ function New-JSScript() {
     {
         document.getElementById('lama').innerHTML = content;
     }
-    function dropdownMenu1() 
+    function dropdownMenu(dropdownId) 
     {
-        const x = document.getElementById("basic");
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-            x.previousElementSibling.className += " w3-green";
-        }
-        else {
-            x.className = x.className.replace(" w3-show", "");
-            x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
-        }
-    }
-    function dropdownMenu2() 
-    {
-        const x = document.getElementById("update");
+        const x = document.getElementById(dropdownId);
         if (x.className.indexOf("w3-show") == -1) {
             x.className += " w3-show";
             x.previousElementSibling.className += " w3-green";

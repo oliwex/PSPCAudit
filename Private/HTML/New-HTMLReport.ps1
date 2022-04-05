@@ -1,7 +1,7 @@
 # @IN: NONE
 # @ACTION: creating dashboard and injecting operating system data into it
 # @OUT: full dashboard with data showing to user
-function New-HTMLBody() {
+function New-HTMLReport() {
     $report = @"
 <!DOCTYPE html>
 <html>
@@ -10,7 +10,7 @@ $(New-HTMLHead)
     <div class="w3-sidebar w3-bar-block w3-light-grey w3-card" style="width:160px;">
         <a href="#" class="w3-bar-item w3-button">Link 1</a>
         
-        <div class="w3-bar-item w3-button" onclick="dropdownMenu1()">
+        <div class="w3-bar-item w3-button" onclick="dropdownMenu('basic')">
             Basic <i class="fa fa-caret-down"></i>
         </div>
         <div id="basic" class="w3-hide w3-white w3-card-4">
